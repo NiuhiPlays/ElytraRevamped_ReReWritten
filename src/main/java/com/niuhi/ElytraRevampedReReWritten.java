@@ -2,23 +2,27 @@ package com.niuhi;
 
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.loader.api.FabricLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ElytraRevampedReReWritten implements ModInitializer {
 	public static final String MOD_ID = "elytra-revamped-rerewritten";
-
-	// This logger is used to write text to the console and the log file.
-	// It is considered best practice to use your mod id as the logger's name.
-	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+
+	public static final boolean ACCESSSORIES_LOADED = FabricLoader.getInstance().isModLoaded("accessories");
+	public static final boolean YACL_LOADED = FabricLoader.getInstance().isModLoaded("yet_another_config_lib");
 
 	@Override
 	public void onInitialize() {
-		// This code runs as soon as Minecraft is in a mod-load-ready state.
-		// However, some things (like resources) may still be uninitialized.
-		// Proceed with mild caution.
+		LOGGER.info("Flying into the world! But rewritten.");
 
-		LOGGER.info("Hello Fabric world!");
+		if (ACCESSSORIES_LOADED){
+			LOGGER.info("Accessories mod detected! Now checking for capes...");
+		}
+		if (YACL_LOADED){
+			LOGGER.info("YACL detected! Enabling In-Game configurations...");
+		}
+
 	}
 }
