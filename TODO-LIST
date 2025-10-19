@@ -1,0 +1,79 @@
+TODO
+
+- Detect player wearing & Flying with Elytra
+	- Vanilla
+		- Check for IsGliding
+		- Check for Wearing Elytra in CHEST
+	- Accessories (Compat)
+		- Copy from old mod version (Had a really hard time figuring this out)
+
+- Disable Firework Rockets 
+	- Add Grace Period for one time use
+		- Configurable, by default 20 Ticks time to Use rocket.
+	- Add Smoke Flair when using rockets mid flight
+		- See Visuals and Sounds for more info on this feature.
+	- Add Midflight boost
+		- Add a Firework star to the Rocket for a 1 Time extra Boost.
+
+
+- Detect Fireplace (LIT)
+	- Normal
+	- Soul fire
+
+- Detect Hay underneath Campfires that are LIT
+	- Hay changes boost amount
+
+- Make Campfires Boost	(All Options are Configurable)
+	- Normal pushes Upwards
+		- Apply Boost if player flies in between 1 to 10 blocks above the Campfire
+		- If Hay is present, make it between 1 to 25.
+		- Also exponentially make the boost less the further the player is from the Campfire.
+	- Soul pulls Downwards
+		- Apply Pull if player flies in between 1 to 10 blocks above the Soul Campfire
+		- If Hay is present, make it between 1 to 25.
+		- Also exponentially make the pull less the closer the player is from the Soul Campfire.
+	- Campfires together in a grid adds extra Boost or Pulls
+		- 1x1 = Default values
+		- 2x2 = 25% stronger
+		- 3x3 = 50% stronger
+
+
+- Add Controllable Drag (Configurable Option)
+	- Press Shift to Use
+
+- Add Air Drag based on world height (Configurable Option)
+	- By Default OFF
+
+- Add Elytra Bounce (Configurable Option)
+	- By Default OFF
+
+- Add Visuals and Sounds (Configurable Option)
+	- Smoke Flair (Campfire smoke particle for Server side. Colored Campfire Particles based on NBT Data on client side(But server checks for NBT and sends it to all clients with the mod))
+	- Drag particles
+	- Boost Particles (When receiving the boost from the campfire)
+	- Pull Particles (When receiving the pull from the soul campfire)
+
+	- Add sounds to these events (Breeze Sounds)
+	
+- Debug Mode
+	- Add Debug Menu for YACL
+	- Add Debug Commands for Servers
+		- Being able to get logs from all Features (Every Feature has its own Debug Command to limit spam)
+
+- ModMenu support (YACL)
+	- Make everything configurable using YACL
+	- Make everything configurable using .JSON file
+
+
+List of versions (Every version has code changes if they aren't written together in the same line)
+1.21.4
+1.21.5 - 1.21.8
+
+
+
+Optional Features, Maybe Never?
+
+- Rocket Duration Configurable
+	- Based on a old Snapshot, where the Duration of each Rocket could 
+
+- Check if a Riptide cooldown is possible
