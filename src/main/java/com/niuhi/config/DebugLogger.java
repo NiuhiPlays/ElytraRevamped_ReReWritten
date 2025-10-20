@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 public class DebugLogger {
 
     private final String modId;
-    private final ModConfig config; // ← Replace with your actual config class reference
+    private final ModConfig config;
     private static final DateTimeFormatter FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
