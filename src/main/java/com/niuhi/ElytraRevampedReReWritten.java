@@ -1,5 +1,6 @@
 package com.niuhi;
 
+import com.niuhi.config.ModConfig;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.loader.api.FabricLoader;
@@ -24,5 +25,19 @@ public class ElytraRevampedReReWritten implements ModInitializer {
 			LOGGER.info("YACL detected! Enabling In-Game configurations...");
 		}
 
+		ModConfig config = ModConfig.getInstance();
+		if (config.debugMode.enableDebug) {
+			LOGGER.info("Debug mode is ENABLED. Detailed logging on the way!");
+			LOGGER.info("Debug Settings: BoostDebug={}, PullDebug={}, DragDebug={}, RocketDebug={}, ElytraDebug={}, VisualDebug={}",
+					config.debugMode.boostDebug,
+					config.debugMode.pullDebug,
+					config.debugMode.dragDebug,
+					config.debugMode.rocketDebug,
+					config.debugMode.elytraDebug,
+					config.debugMode.visualDebug
+			);
+		} else {
+			LOGGER.info("Debug mode is DISABLED. Basic logging on the way!");
+		}
 	}
 }
