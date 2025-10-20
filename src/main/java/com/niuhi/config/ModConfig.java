@@ -97,7 +97,7 @@ public class ModConfig {
     }
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("Elytra_Revamped_ReReWritten.json");
+    private static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("Elytra_Revamped_RRW.json");
     private static ModConfig INSTANCE;
 
     public static ModConfig init() {
@@ -116,7 +116,7 @@ public class ModConfig {
                     return loaded;
                 }
             } catch (java.io.IOException e) {
-                System.err.println("Error loading config: " + e.getMessage());
+                System.err.println("Error loading ER config: " + e.getMessage());
             }
         }
         ModConfig config = new ModConfig();
@@ -128,7 +128,7 @@ public class ModConfig {
         try (java.io.FileWriter writer = new java.io.FileWriter(CONFIG_PATH.toFile())) {
             GSON.toJson(config, writer);
         } catch (java.io.IOException e) {
-            System.err.println("Error saving config: " + e.getMessage());
+            System.err.println("Error saving ER config: " + e.getMessage());
         }
     }
 
