@@ -28,6 +28,8 @@ public class ModConfig {
         public int hayDetectionHeight = 25;
 
         public boolean enableGridBoost = true;
+        public double gridTwoByTwo = 0.25;
+        public double gridThreeByThree = 0.50;
         public boolean exponentialBoost = true;
 
         public int boostCooldownTicks = 0;
@@ -44,6 +46,8 @@ public class ModConfig {
         public int hayDetectionHeight = 25;
 
         public boolean enableGridPull = true;
+        public double gridTwoByTwo = 0.25;
+        public double gridThreeByThree = 0.50;
         public boolean exponentialPull = true;
 
         public int pullCooldownTicks = 0;
