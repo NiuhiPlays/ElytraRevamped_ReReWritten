@@ -20,6 +20,9 @@
 		],
 		"client": [
 			"com.niuhi.ElytraRevampedReReWrittenClient"
+		],
+		"modmenu": [
+			"com.niuhi.config.ModMenu"
 		]
 	},
 	"mixins": [
