@@ -15,7 +15,6 @@ public class DebugLogger {
         this.config = config;
     }
 
-
     public void log(String section, String message) {
         // Master debug toggle
         if (!config.debugMode.enableDebug) return;
@@ -34,10 +33,6 @@ public class DebugLogger {
         System.out.println(output);
     }
 
-    /**
-     * Helper that checks if a section is enabled in your config.
-     * Adjust this to match how your config stores section toggles.
-     */
     private boolean isSectionEnabled(String section) {
         return switch (section.toUpperCase()) {
             case "BOOST" -> config.debugMode.boostDebug;
