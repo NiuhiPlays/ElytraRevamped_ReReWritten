@@ -144,9 +144,7 @@ public class ModConfig {
     }
 
     public static void save() {
-        if (ElytraRevampedReReWritten.YACL_LOADED) {
-            // YACL handles saving via the screen
-        } else {
+        if (INSTANCE != null) {
             saveManual(INSTANCE);
         }
     }

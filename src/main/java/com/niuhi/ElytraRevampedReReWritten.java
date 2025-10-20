@@ -12,7 +12,7 @@ public class ElytraRevampedReReWritten implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	public static final boolean ACCESSSORIES_LOADED = FabricLoader.getInstance().isModLoaded("accessories");
-	public static final boolean YACL_LOADED = FabricLoader.getInstance().isModLoaded("yet_another_config_lib");
+	public static final boolean YACL_LOADED = FabricLoader.getInstance().isModLoaded("yet_another_config_lib_v3");
 
 	@Override
 	public void onInitialize() {
