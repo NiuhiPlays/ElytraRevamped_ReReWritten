@@ -94,6 +94,13 @@ public class ModConfig {
     public static class DebugMode {
         public boolean enableDebug = false;
         public boolean enableDebugCommands = true;
+
+        public boolean boostDebug = false;
+        public boolean pullDebug = false;
+        public boolean dragDebug = false;
+        public boolean rocketDebug = false;
+        public boolean elytraDebug = false;
+        public boolean visualDebug = false;
     }
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
