@@ -32,7 +32,7 @@ public class ModConfig {
         public double gridThreeByThree = 0.50;
         public boolean exponentialBoost = true;
 
-        public int boostCooldownTicks = 5;
+        public int boostCooldownTicks = 10;
     }
 
     // All config options for Pull
@@ -50,7 +50,7 @@ public class ModConfig {
         public double gridThreeByThree = 0.50;
         public boolean exponentialPull = true;
 
-        public int pullCooldownTicks = 5;
+        public int pullCooldownTicks = 10;
     }
 
     // All config options for Drag
@@ -80,7 +80,7 @@ public class ModConfig {
         public boolean enableBounce = false;
 
         public boolean riptideNerf = true;
-        public int riptideCooldown = 1200;
+        public int riptideCooldown = 600;
     }
 
     // All config options for Visuals and Sounds
