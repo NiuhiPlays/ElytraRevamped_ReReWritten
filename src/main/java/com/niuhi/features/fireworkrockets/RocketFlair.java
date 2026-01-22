@@ -8,9 +8,13 @@ import net.minecraft.component.type.FireworkExplosionComponent;
 import net.minecraft.component.type.FireworksComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.Registries;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import it.unimi.dsi.fastutil.ints.IntList;
 
@@ -22,6 +26,7 @@ import java.util.UUID;
 public final class RocketFlair {
     private static final Map<UUID, FlairState> ACTIVE_FLAIRS = new HashMap<>();
     private static final int EMIT_INTERVAL_TICKS = 2;
+    private static final Identifier SOUND_ID = Identifier.of("minecraft", "entity.breeze.wind_burst");
 
     private RocketFlair() {
     }
@@ -33,6 +38,7 @@ public final class RocketFlair {
         }
         Integer color = getRocketColor(stack);
         ACTIVE_FLAIRS.put(player.getUuid(), new FlairState(durationTicks, color));
+        playActivationSound(player);
     }
 
     public static void tick(MinecraftServer server) {
@@ -83,6 +89,20 @@ public final class RocketFlair {
                         6, 0.15, 0.05, 0.15, 0.02);
             }
         }
+    }
+
+    private static void playActivationSound(ServerPlayerEntity player) {
+        ModConfig config = ModConfig.getInstance();
+        if (!config.soundConfig.rocketSound) {
+            return;
+        }
+        ServerWorld world = player.getServerWorld();
+        SoundEvent sound = Registries.SOUND_EVENT.get(SOUND_ID);
+        if (sound == null) {
+            return;
+        }
+        Vec3d pos = player.getPos();
+        world.playSound(null, pos.x, pos.y, pos.z, sound, SoundCategory.PLAYERS, 0.9f, 1.0f);
     }
 
     private static int getFlairDuration(ItemStack stack) {

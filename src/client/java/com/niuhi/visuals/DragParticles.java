@@ -18,7 +18,9 @@ public final class DragParticles {
             spawnParticles(world, pos);
         }
         if (config.soundConfig.dragSound) {
-            VisualSoundUtil.playSound(world, pos, SOUND_ID);
+            if (world.random.nextInt(5) == 0) {
+                VisualSoundUtil.playSound(world, pos, SOUND_ID);
+            }
         }
     }
 

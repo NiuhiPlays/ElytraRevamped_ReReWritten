@@ -24,8 +24,11 @@ public final class PullParticles {
 
     private static void spawnParticles(ClientWorld world, Vec3d pos) {
         for (int i = 0; i < 8; i++) {
+            double offsetX = (world.random.nextDouble() - 0.5) * 1.2;
+            double offsetY = world.random.nextDouble() * 0.6;
+            double offsetZ = (world.random.nextDouble() - 0.5) * 1.2;
             world.addParticle(ParticleTypes.SOUL_FIRE_FLAME,
-                    pos.x, pos.y + 0.2, pos.z,
+                    pos.x + offsetX, pos.y + 0.2 + offsetY, pos.z + offsetZ,
                     world.random.nextGaussian() * 0.02,
                     -0.02,
                     world.random.nextGaussian() * 0.02);

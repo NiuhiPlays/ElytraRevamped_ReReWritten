@@ -32,7 +32,7 @@ public class ModConfig {
         public double gridThreeByThree = 0.50;
         public boolean exponentialBoost = true;
 
-        public int boostCooldownTicks = 0;
+        public int boostCooldownTicks = 5;
     }
 
     // All config options for Pull
@@ -50,7 +50,7 @@ public class ModConfig {
         public double gridThreeByThree = 0.50;
         public boolean exponentialPull = true;
 
-        public int pullCooldownTicks = 0;
+        public int pullCooldownTicks = 5;
     }
 
     // All config options for Drag
