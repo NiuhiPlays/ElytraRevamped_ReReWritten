@@ -3,6 +3,7 @@ package com.niuhi.config;
 
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.*;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 
@@ -10,19 +11,26 @@ public class YACL {
 
     public static Screen getConfigScreen(Screen parent) {
         ModConfig config = ModConfig.getInstance();
+        boolean singleplayer = MinecraftClient.getInstance().isInSingleplayer();
 
-        return YetAnotherConfigLib.createBuilder()
+        YetAnotherConfigLib.Builder builder = YetAnotherConfigLib.createBuilder()
                 .title(Text.translatable("config.errrw.title"))
-                .category(createBoostCategory(config))
-                .category(createPullCategory(config))
-                .category(createDragCategory(config))
-                .category(createRocketCategory(config))
-                .category(createElytraCategory(config))
-                .category(createVisualCategory(config))
-                .category(createDebugCategory(config))
                 .save(ModConfig::save)
-                .build()
-                .generateScreen(parent);
+                ;
+
+        if (singleplayer) {
+            builder.category(createBoostCategory(config));
+            builder.category(createPullCategory(config));
+            builder.category(createDragCategory(config));
+            builder.category(createRocketCategory(config));
+            builder.category(createElytraCategory(config));
+            builder.category(createDebugCategory(config));
+        }
+
+        builder.category(createVisualCategory(config));
+        builder.category(createSoundCategory(config));
+
+        return builder.build().generateScreen(parent);
     }
 
     private static ConfigCategory createBoostCategory(ModConfig config) {
@@ -400,6 +408,12 @@ public class YACL {
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
                             .option(Option.<Boolean>createBuilder()
+                                    .name(Text.translatable("config.errrw.visual.rocketParticles"))
+                                    .description(OptionDescription.of(Text.translatable("config.errrw.visual.rocketParticles.tooltip")))
+                                    .binding(true, () -> config.visualConfig.RocketParticles, val -> config.visualConfig.RocketParticles = val)
+                                    .controller(TickBoxControllerBuilder::create)
+                                    .build())
+                            .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.visual.airDragParticles"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.visual.airDragParticles.tooltip")))
                                     .binding(true, () -> config.visualConfig.AirDragParticles, val -> config.visualConfig.AirDragParticles = val)
@@ -409,6 +423,40 @@ public class YACL {
                                     .name(Text.translatable("config.errrw.visual.coloredParticles"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.visual.coloredParticles.tooltip")))
                                     .binding(true, () -> config.visualConfig.ColoredParticles, val -> config.visualConfig.ColoredParticles = val)
+                                    .controller(TickBoxControllerBuilder::create)
+                                    .build())
+                            .build())
+                    .build();
+        }
+
+        private static ConfigCategory createSoundCategory(ModConfig config) {
+            return ConfigCategory.createBuilder()
+                    .name(Text.translatable("config.errrw.category.sound"))
+                    .tooltip(Text.translatable("config.errrw.category.sound.tooltip"))
+                    .group(OptionGroup.createBuilder()
+                            .name(Text.translatable("config.errrw.group.sound.general"))
+                            .option(Option.<Boolean>createBuilder()
+                                    .name(Text.translatable("config.errrw.sound.boost"))
+                                    .description(OptionDescription.of(Text.translatable("config.errrw.sound.boost.tooltip")))
+                                    .binding(true, () -> config.soundConfig.boostSound, val -> config.soundConfig.boostSound = val)
+                                    .controller(TickBoxControllerBuilder::create)
+                                    .build())
+                            .option(Option.<Boolean>createBuilder()
+                                    .name(Text.translatable("config.errrw.sound.pull"))
+                                    .description(OptionDescription.of(Text.translatable("config.errrw.sound.pull.tooltip")))
+                                    .binding(true, () -> config.soundConfig.pullSound, val -> config.soundConfig.pullSound = val)
+                                    .controller(TickBoxControllerBuilder::create)
+                                    .build())
+                            .option(Option.<Boolean>createBuilder()
+                                    .name(Text.translatable("config.errrw.sound.drag"))
+                                    .description(OptionDescription.of(Text.translatable("config.errrw.sound.drag.tooltip")))
+                                    .binding(true, () -> config.soundConfig.dragSound, val -> config.soundConfig.dragSound = val)
+                                    .controller(TickBoxControllerBuilder::create)
+                                    .build())
+                            .option(Option.<Boolean>createBuilder()
+                                    .name(Text.translatable("config.errrw.sound.rocket"))
+                                    .description(OptionDescription.of(Text.translatable("config.errrw.sound.rocket.tooltip")))
+                                    .binding(true, () -> config.soundConfig.rocketSound, val -> config.soundConfig.rocketSound = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
                             .build())

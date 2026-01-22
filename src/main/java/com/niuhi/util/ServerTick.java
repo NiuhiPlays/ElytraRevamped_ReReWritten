@@ -3,6 +3,7 @@ package com.niuhi.util;
 import com.niuhi.config.ModConfig;
 import com.niuhi.features.campfires.CampfireBoost;
 import com.niuhi.features.campfires.CampfirePull;
+import com.niuhi.features.drag.ControllableDrag;
 import com.niuhi.features.elytra.ElytraDetection;
 import com.niuhi.features.fireworkrockets.RocketGrace;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -45,6 +46,7 @@ public final class ServerTick {
             if (config.pullConfig.enablePull) {
                 CampfirePull.tryPull(player, config, serverTicks);
             }
+            ControllableDrag.tryApply(player, config, serverTicks);
         }
     }
 }

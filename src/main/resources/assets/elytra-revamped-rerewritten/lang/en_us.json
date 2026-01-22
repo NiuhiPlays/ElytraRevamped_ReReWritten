@@ -13,6 +13,8 @@
   "config.errrw.category.elytra.tooltip": "Configure all related options for elytra mechanics",
   "config.errrw.category.visual": "Visual Configurations",
   "config.errrw.category.visual.tooltip": "Configure all related options for visual effects",
+  "config.errrw.category.sound": "Sound Configurations",
+  "config.errrw.category.sound.tooltip": "Configure all related options for sound effects",
   "config.errrw.category.debug": "Debug Configurations",
   "config.errrw.category.debug.tooltip": "Configure all related options for debug options",
 
@@ -32,6 +34,7 @@
   "config.errrw.group.elytra.general": "General Elytra",
   "config.errrw.group.elytra.riptide": "Riptide",
   "config.errrw.group.visual.particles": "Particles",
+  "config.errrw.group.sound.general": "Sounds",
   "config.errrw.group.debug.general": "General Debug",
   "config.errrw.group.debug.specific": "Specific Debug Options",
 
@@ -132,10 +135,21 @@
   "config.errrw.visual.pullParticles.tooltip": "Show particles for pull effects",
   "config.errrw.visual.dragParticles": "Drag Particles",
   "config.errrw.visual.dragParticles.tooltip": "Show particles for drag effects",
+  "config.errrw.visual.rocketParticles": "Rocket Flair Particles",
+  "config.errrw.visual.rocketParticles.tooltip": "Show particles for rocket flair effects",
   "config.errrw.visual.airDragParticles": "Air Drag Particles",
   "config.errrw.visual.airDragParticles.tooltip": "Show particles for air drag effects",
   "config.errrw.visual.coloredParticles": "Colored Particles",
   "config.errrw.visual.coloredParticles.tooltip": "Enable colored particle effects",
+
+  "config.errrw.sound.boost": "Boost Sound",
+  "config.errrw.sound.boost.tooltip": "Play a sound when boost is applied",
+  "config.errrw.sound.pull": "Pull Sound",
+  "config.errrw.sound.pull.tooltip": "Play a sound when pull is applied",
+  "config.errrw.sound.drag": "Drag Sound",
+  "config.errrw.sound.drag.tooltip": "Play a sound when drag is applied",
+  "config.errrw.sound.rocket": "Rocket Sound",
+  "config.errrw.sound.rocket.tooltip": "Play a sound when rocket flair is triggered",
 
   "config.errrw.debug.enable": "Enable Debug Mode",
   "config.errrw.debug.enable.tooltip": "Enable debug mode for the mod",

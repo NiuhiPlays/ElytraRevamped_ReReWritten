@@ -14,6 +14,7 @@ public class ModConfig {
     public RocketConfig rocketConfig = new RocketConfig();
     public ElytraConfig elytraConfig = new ElytraConfig();
     public VisualConfig visualConfig = new VisualConfig();
+    public SoundConfig soundConfig = new SoundConfig();
     public DebugMode debugMode = new DebugMode();
 
     // All config options for Boost
@@ -89,8 +90,17 @@ public class ModConfig {
         public boolean BoostParticles = true;
         public boolean PullParticles = true;
         public boolean DragParticles = true;
+        public boolean RocketParticles = true;
         public boolean ColoredParticles = true;
         public boolean AirDragParticles = true;
+    }
+
+    // All config options for Sounds
+    public static class SoundConfig {
+        public boolean boostSound = true;
+        public boolean pullSound = true;
+        public boolean dragSound = true;
+        public boolean rocketSound = true;
     }
 
     // All config options for Debugging
