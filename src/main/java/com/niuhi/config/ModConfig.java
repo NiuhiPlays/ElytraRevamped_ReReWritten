@@ -2,7 +2,6 @@ package com.niuhi.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.niuhi.ElytraRevampedReReWritten;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.File;
