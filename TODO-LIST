@@ -1,27 +1,5 @@
 TODO
 
-- Add Controllable Drag (Configurable Option)
-	- Press Shift to Use
-
-
-- Add Visuals and Sounds (Configurable Option)
-	- Smoke Flair (Campfire smoke particle for Server side. Colored Campfire Particles based on NBT Data on client side(But server checks for NBT and sends it to all clients with the mod))
-	- Drag particles
-	- Boost Particles (When receiving the boost from the campfire)
-	- Pull Particles (When receiving the pull from the soul campfire)
-
-	- Add sounds to these events (Breeze Sounds)
-	
-- Debug Mode
-	- Add Debug Menu for YACL
-	- Add Debug Commands for Servers
-		- Being able to get logs from all Features (Every Feature has its own Debug Command to limit spam)
-
-- ModMenu support (YACL)
-	- Make everything configurable using YACL
-	- Make everything configurable using .JSON file
-
-
 List of versions (Every version has code changes if they aren't written together in the same line)
 1.21.4
 1.21.5 - 1.21.8
@@ -81,3 +59,24 @@ DONE
 		- 1x1 = Default values
 		- 2x2 = 25% stronger
 		- 3x3 = 50% stronger
+
+- Add Controllable Drag (Configurable Option)
+	- Press Shift to Use
+
+
+- Add Visuals and Sounds (Configurable Option)
+	- Smoke Flair (Campfire smoke particle for Server side. Colored Campfire Particles based on NBT Data on client side(But server checks for NBT and sends it to all clients with the mod))
+	- Drag particles
+	- Boost Particles (When receiving the boost from the campfire)
+	- Pull Particles (When receiving the pull from the soul campfire)
+
+	- Add sounds to these events (Breeze Sounds)
+	
+- Debug Mode
+	- Add Debug Menu for YACL
+	- Add Debug Commands for Servers
+		- Being able to get logs from all Features (Every Feature has its own Debug Command to limit spam)
+
+- ModMenu support (YACL)
+	- Make everything configurable using YACL
+	- Make everything configurable using .JSON file

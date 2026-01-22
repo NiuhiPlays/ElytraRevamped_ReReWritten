@@ -3,8 +3,7 @@ package com.niuhi.features.campfires;
 import com.niuhi.ElytraRevampedReReWritten;
 import com.niuhi.config.DebugLogger;
 import com.niuhi.config.ModConfig;
-import com.niuhi.network.ModNetworking;
-import com.niuhi.network.VisualEventType;
+import com.niuhi.visuals.ServerVisuals;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
@@ -41,7 +40,7 @@ public final class CampfireBoost {
         player.velocityModified = true;
 
         LAST_BOOST_TICK.put(player.getUuid(), serverTick);
-        ModNetworking.sendVisualEvent(player, VisualEventType.BOOST, player.getPos());
+        ServerVisuals.broadcastBoost(player);
 
         DebugLogger logger = new DebugLogger(ElytraRevampedReReWritten.MOD_ID, config);
         logger.log("BOOST", "Applied boost=" + result.strength

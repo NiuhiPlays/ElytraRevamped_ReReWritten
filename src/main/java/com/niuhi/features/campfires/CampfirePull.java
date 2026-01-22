@@ -3,8 +3,7 @@ package com.niuhi.features.campfires;
 import com.niuhi.ElytraRevampedReReWritten;
 import com.niuhi.config.DebugLogger;
 import com.niuhi.config.ModConfig;
-import com.niuhi.network.ModNetworking;
-import com.niuhi.network.VisualEventType;
+import com.niuhi.visuals.ServerVisuals;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
@@ -42,7 +41,7 @@ public final class CampfirePull {
         player.velocityModified = true;
 
         LAST_PULL_TICK.put(player.getUuid(), serverTick);
-        ModNetworking.sendVisualEvent(player, VisualEventType.PULL, player.getPos());
+        ServerVisuals.broadcastPull(player);
 
         DebugLogger logger = new DebugLogger(ElytraRevampedReReWritten.MOD_ID, config);
         logger.log("PULL", "Applied pull=" + result.strength

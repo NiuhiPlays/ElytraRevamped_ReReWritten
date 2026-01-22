@@ -3,8 +3,7 @@ package com.niuhi.features.drag;
 import com.niuhi.ElytraRevampedReReWritten;
 import com.niuhi.config.DebugLogger;
 import com.niuhi.config.ModConfig;
-import com.niuhi.network.ModNetworking;
-import com.niuhi.network.VisualEventType;
+import com.niuhi.visuals.ServerVisuals;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.Vec3d;
 
@@ -33,7 +32,7 @@ public final class ControllableDrag {
 
         Integer lastTick = LAST_DRAG_TICK.get(player.getUuid());
         if (lastTick == null || serverTick - lastTick >= 5) {
-            ModNetworking.sendVisualEvent(player, VisualEventType.DRAG, player.getPos());
+            ServerVisuals.broadcastDrag(player);
             LAST_DRAG_TICK.put(player.getUuid(), serverTick);
         }
 
