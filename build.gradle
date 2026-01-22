@@ -94,14 +94,6 @@ jar {
 	from(sourceSets.client.output)
 }
 
-
-
-
-
-
-
-
-
 // configure the maven publication
 publishing {
 	publications {
