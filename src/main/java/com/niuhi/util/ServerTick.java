@@ -5,7 +5,6 @@ import com.niuhi.features.campfires.CampfireBoost;
 import com.niuhi.features.campfires.CampfirePull;
 import com.niuhi.features.drag.AirDrag;
 import com.niuhi.features.drag.ControllableDrag;
-import com.niuhi.features.elytra.ElytraBounce;
 import com.niuhi.features.elytra.ElytraDetection;
 import com.niuhi.features.elytra.RiptideCooldown;
 import com.niuhi.features.fireworkrockets.RocketFlair;
@@ -43,7 +42,6 @@ public final class ServerTick {
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             RiptideCooldown.clearOnLanding(player, config);
             RiptideCooldown.applyPending(player, config, serverTicks);
-            ElytraBounce.tryBounce(player, config, serverTicks);
             if (!ELYTRA_DETECTION.isFlying(player)) {
                 continue;
             }

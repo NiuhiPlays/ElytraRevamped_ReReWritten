@@ -100,6 +100,8 @@
   "config.errrw.elytra.enableMod.tooltip": "Enable or disable the entire mod",
   "config.errrw.elytra.enableBounce": "Enable Bounce",
   "config.errrw.elytra.enableBounce.tooltip": "Enable bounce mechanics",
+  "config.errrw.elytra.enableBounce.experimental": "Enable Bounce (Experimental)",
+  "config.errrw.elytra.enableBounce.experimental.tooltip": "Experimental bunny hop-style boost while holding jump",
   "config.errrw.elytra.riptideNerf": "Riptide Nerf",
   "config.errrw.elytra.riptideNerf.tooltip": "Enable riptide nerf",
   "config.errrw.elytra.riptideCooldown": "Riptide Cooldown (ticks)",
