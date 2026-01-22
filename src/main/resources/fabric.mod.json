@@ -3,13 +3,13 @@
 	"id": "elytra-revamped-rerewritten",
 	"version": "${version}",
 	"name": "Elytra Revamped ReReWritten",
-	"description": "Elytra Revamped! Inspired by Aileron",
+	"description": "An nerfed Elytra experience! Making other transports more interesting in the late game. Inspired by Aileron!",
 	"authors": [
 		"Niuhi"
 	],
 	"contact": {
 		"homepage": "https://modrinth.com/mod/elytra-revamped",
-		"sources": "https://github.com/NiuhiPlays/Elytra-Revamped"
+		"sources": "https://github.com/NiuhiPlays/ElytraRevamped_ReReWritten"
 	},
 	"license": "CC-BY-SA-4.0",
 	"icon": "assets/elytra-revamped-rerewritten/icon.png",
