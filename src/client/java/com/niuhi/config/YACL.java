@@ -11,28 +11,36 @@ public class YACL {
 
     public static Screen getConfigScreen(Screen parent) {
         ModConfig config = ModConfig.getInstance();
-        boolean singleplayer = MinecraftClient.getInstance().isInSingleplayer();
+        boolean serverConfigEditable = canEditServerConfig();
 
         YetAnotherConfigLib.Builder builder = YetAnotherConfigLib.createBuilder()
                 .title(Text.translatable("config.errrw.title"))
                 .save(ModConfig::save)
                 ;
 
-        if (singleplayer) {
-            builder.category(createBoostCategory(config));
-            builder.category(createPullCategory(config));
-            builder.category(createDragCategory(config));
-            builder.category(createRocketCategory(config));
-            builder.category(createElytraCategory(config));
-            builder.category(createDebugCategory(config));
-        }
-
+        builder.category(createBoostCategory(config, serverConfigEditable));
+        builder.category(createPullCategory(config, serverConfigEditable));
+        builder.category(createDragCategory(config, serverConfigEditable));
+        builder.category(createRocketCategory(config, serverConfigEditable));
+        builder.category(createElytraCategory(config, serverConfigEditable));
+        builder.category(createDebugCategory(config, serverConfigEditable));
         builder.category(createVisualCategory(config));
 
         return builder.build().generateScreen(parent);
     }
 
-    private static ConfigCategory createBoostCategory(ModConfig config) {
+    private static boolean canEditServerConfig() {
+        MinecraftClient client = MinecraftClient.getInstance();
+        if (client == null) {
+            return true;
+        }
+        if (client.getNetworkHandler() == null) {
+            return true;
+        }
+        return client.isInSingleplayer();
+    }
+
+    private static ConfigCategory createBoostCategory(ModConfig config, boolean serverConfigEditable) {
         return ConfigCategory.createBuilder()
                     .name(Text.translatable("config.errrw.category.boost"))
                     .tooltip(Text.translatable("config.errrw.category.boost.tooltip"))
@@ -41,12 +49,14 @@ public class YACL {
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.boost.enable"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.boost.enable.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(true, () -> config.boostConfig.enableBoost, val -> config.boostConfig.enableBoost = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
                             .option(Option.<Double>createBuilder()
                                     .name(Text.translatable("config.errrw.boost.amount"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.boost.amount.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(0.3, () -> config.boostConfig.boostAmount, val -> config.boostConfig.boostAmount = val)
                                     .controller(opt -> DoubleSliderControllerBuilder.create(opt)
                                             .range(0.0, 1.0)
@@ -55,6 +65,7 @@ public class YACL {
                             .option(Option.<Integer>createBuilder()
                                     .name(Text.translatable("config.errrw.boost.detectionHeight"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.boost.detectionHeight.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(10, () -> config.boostConfig.detectionHeight, val -> config.boostConfig.detectionHeight = val)
                                     .controller(opt -> IntegerSliderControllerBuilder.create(opt)
                                             .range(1, 25)
@@ -63,6 +74,7 @@ public class YACL {
                             .option(Option.<Integer>createBuilder()
                                     .name(Text.translatable("config.errrw.boost.cooldown"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.boost.cooldown.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(0, () -> config.boostConfig.boostCooldownTicks, val -> config.boostConfig.boostCooldownTicks = val)
                                     .controller(opt -> IntegerSliderControllerBuilder.create(opt)
                                             .range(0, 100)
@@ -74,12 +86,14 @@ public class YACL {
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.boost.hay.enable"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.boost.hay.enable.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(true, () -> config.boostConfig.enableHayBoost, val -> config.boostConfig.enableHayBoost = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
                             .option(Option.<Double>createBuilder()
                                     .name(Text.translatable("config.errrw.boost.hay.amount"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.boost.hay.amount.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(0.5, () -> config.boostConfig.hayBoostAmount, val -> config.boostConfig.hayBoostAmount = val)
                                     .controller(opt -> DoubleSliderControllerBuilder.create(opt)
                                             .range(0.0, 1.0)
@@ -88,6 +102,7 @@ public class YACL {
                             .option(Option.<Integer>createBuilder()
                                     .name(Text.translatable("config.errrw.boost.hay.detectionHeight"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.boost.hay.detectionHeight.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(25, () -> config.boostConfig.hayDetectionHeight, val -> config.boostConfig.hayDetectionHeight = val)
                                     .controller(opt -> IntegerSliderControllerBuilder.create(opt)
                                             .range(1, 50)
@@ -99,12 +114,14 @@ public class YACL {
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.boost.grid.enable"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.boost.grid.enable.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(true, () -> config.boostConfig.enableGridBoost, val -> config.boostConfig.enableGridBoost = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
                             .option(Option.<Double>createBuilder()
                                     .name(Text.translatable("config.errrw.boost.grid.2x2"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.boost.grid.2x2.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(0.25, () -> config.boostConfig.gridTwoByTwo, val -> config.boostConfig.gridTwoByTwo = val)
                                     .controller(opt -> DoubleSliderControllerBuilder.create(opt)
                                             .range(0.0, 1.0)
@@ -113,6 +130,7 @@ public class YACL {
                             .option(Option.<Double>createBuilder()
                                     .name(Text.translatable("config.errrw.boost.grid.3x3"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.boost.grid.3x3.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(0.50, () -> config.boostConfig.gridThreeByThree, val -> config.boostConfig.gridThreeByThree = val)
                                     .controller(opt -> DoubleSliderControllerBuilder.create(opt)
                                             .range(0.0, 1.0)
@@ -124,6 +142,7 @@ public class YACL {
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.boost.extra.exponential"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.boost.extra.exponential.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(true, () -> config.boostConfig.exponentialBoost, val -> config.boostConfig.exponentialBoost = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
@@ -131,7 +150,7 @@ public class YACL {
                     .build();
         }
 
-        private static ConfigCategory createPullCategory(ModConfig config) {
+        private static ConfigCategory createPullCategory(ModConfig config, boolean serverConfigEditable) {
             return ConfigCategory.createBuilder()
                     .name(Text.translatable("config.errrw.category.pull"))
                     .tooltip(Text.translatable("config.errrw.category.pull.tooltip"))
@@ -140,12 +159,14 @@ public class YACL {
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.pull.enable"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.pull.enable.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(true, () -> config.pullConfig.enablePull, val -> config.pullConfig.enablePull = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
                             .option(Option.<Double>createBuilder()
                                     .name(Text.translatable("config.errrw.pull.amount"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.pull.amount.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(0.3, () -> config.pullConfig.pullAmount, val -> config.pullConfig.pullAmount = val)
                                     .controller(opt -> DoubleSliderControllerBuilder.create(opt)
                                             .range(0.0, 1.0)
@@ -154,6 +175,7 @@ public class YACL {
                             .option(Option.<Integer>createBuilder()
                                     .name(Text.translatable("config.errrw.pull.detectionHeight"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.pull.detectionHeight.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(10, () -> config.pullConfig.detectionHeight, val -> config.pullConfig.detectionHeight = val)
                                     .controller(opt -> IntegerSliderControllerBuilder.create(opt)
                                             .range(1, 25)
@@ -162,6 +184,7 @@ public class YACL {
                             .option(Option.<Integer>createBuilder()
                                     .name(Text.translatable("config.errrw.pull.cooldown"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.pull.cooldown.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(0, () -> config.pullConfig.pullCooldownTicks, val -> config.pullConfig.pullCooldownTicks = val)
                                     .controller(opt -> IntegerSliderControllerBuilder.create(opt)
                                             .range(0, 100)
@@ -173,12 +196,14 @@ public class YACL {
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.pull.hay.enable"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.pull.hay.enable.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(true, () -> config.pullConfig.enableHayPull, val -> config.pullConfig.enableHayPull = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
                             .option(Option.<Double>createBuilder()
                                     .name(Text.translatable("config.errrw.pull.hay.amount"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.pull.hay.amount.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(0.5, () -> config.pullConfig.hayPullAmount, val -> config.pullConfig.hayPullAmount = val)
                                     .controller(opt -> DoubleSliderControllerBuilder.create(opt)
                                             .range(0.0, 1.0)
@@ -187,6 +212,7 @@ public class YACL {
                             .option(Option.<Integer>createBuilder()
                                     .name(Text.translatable("config.errrw.pull.hay.detectionHeight"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.pull.hay.detectionHeight.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(25, () -> config.pullConfig.hayDetectionHeight, val -> config.pullConfig.hayDetectionHeight = val)
                                     .controller(opt -> IntegerSliderControllerBuilder.create(opt)
                                             .range(1, 50)
@@ -198,12 +224,14 @@ public class YACL {
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.pull.grid.enable"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.pull.grid.enable.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(true, () -> config.pullConfig.enableGridPull, val -> config.pullConfig.enableGridPull = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
                             .option(Option.<Double>createBuilder()
                                     .name(Text.translatable("config.errrw.pull.grid.2x2"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.pull.grid.2x2.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(0.25, () -> config.pullConfig.gridTwoByTwo, val -> config.pullConfig.gridTwoByTwo = val)
                                     .controller(opt -> DoubleSliderControllerBuilder.create(opt)
                                             .range(0.0, 1.0)
@@ -212,6 +240,7 @@ public class YACL {
                             .option(Option.<Double>createBuilder()
                                     .name(Text.translatable("config.errrw.pull.grid.3x3"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.pull.grid.3x3.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(0.50, () -> config.pullConfig.gridThreeByThree, val -> config.pullConfig.gridThreeByThree = val)
                                     .controller(opt -> DoubleSliderControllerBuilder.create(opt)
                                             .range(0.0, 1.0)
@@ -223,6 +252,7 @@ public class YACL {
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.pull.extra.exponential"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.pull.extra.exponential.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(true, () -> config.pullConfig.exponentialPull, val -> config.pullConfig.exponentialPull = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
@@ -230,7 +260,7 @@ public class YACL {
                     .build();
         }
 
-        private static ConfigCategory createDragCategory(ModConfig config) {
+        private static ConfigCategory createDragCategory(ModConfig config, boolean serverConfigEditable) {
             return ConfigCategory.createBuilder()
                     .name(Text.translatable("config.errrw.category.drag"))
                     .tooltip(Text.translatable("config.errrw.category.drag.tooltip"))
@@ -239,12 +269,14 @@ public class YACL {
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.drag.controllable.enable"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.drag.controllable.enable.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(true, () -> config.dragConfig.enableControllableDrag, val -> config.dragConfig.enableControllableDrag = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
                             .option(Option.<Double>createBuilder()
                                     .name(Text.translatable("config.errrw.drag.controllable.amount"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.drag.controllable.amount.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(0.92, () -> config.dragConfig.dragAmount, val -> config.dragConfig.dragAmount = val)
                                     .controller(opt -> DoubleSliderControllerBuilder.create(opt)
                                             .range(0.5, 1.0)
@@ -256,12 +288,14 @@ public class YACL {
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.drag.air.enable"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.drag.air.enable.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(true, () -> config.dragConfig.enableAirDrag, val -> config.dragConfig.enableAirDrag = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
                             .option(Option.<Double>createBuilder()
                                     .name(Text.translatable("config.errrw.drag.air.amount"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.drag.air.amount.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(0.95, () -> config.dragConfig.airDragAmount, val -> config.dragConfig.airDragAmount = val)
                                     .controller(opt -> DoubleSliderControllerBuilder.create(opt)
                                             .range(0.5, 1.0)
@@ -271,7 +305,7 @@ public class YACL {
                     .build();
         }
 
-        private static ConfigCategory createRocketCategory(ModConfig config) {
+        private static ConfigCategory createRocketCategory(ModConfig config, boolean serverConfigEditable) {
             return ConfigCategory.createBuilder()
                     .name(Text.translatable("config.errrw.category.rocket"))
                     .tooltip(Text.translatable("config.errrw.category.rocket.tooltip"))
@@ -280,12 +314,14 @@ public class YACL {
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.rocket.disable"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.rocket.disable.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(true, () -> config.rocketConfig.DisableRockets, val -> config.rocketConfig.DisableRockets = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.rocket.flair"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.rocket.flair.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(true, () -> config.rocketConfig.rocketFlair, val -> config.rocketConfig.rocketFlair = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
@@ -295,12 +331,14 @@ public class YACL {
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.rocket.initialBoost"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.rocket.initialBoost.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(false, () -> config.rocketConfig.initialBoost, val -> config.rocketConfig.initialBoost = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
                             .option(Option.<Integer>createBuilder()
                                     .name(Text.translatable("config.errrw.rocket.gracePeriod"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.rocket.gracePeriod.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(20, () -> config.rocketConfig.gracePeriodTicks, val -> config.rocketConfig.gracePeriodTicks = val)
                                     .controller(opt -> IntegerSliderControllerBuilder.create(opt)
                                             .range(0, 100)
@@ -312,12 +350,14 @@ public class YACL {
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.rocket.changedDuration"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.rocket.changedDuration.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(false, () -> config.rocketConfig.changedDuration, val -> config.rocketConfig.changedDuration = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
                             .option(Option.<Double>createBuilder()
                                     .name(Text.translatable("config.errrw.rocket.duration1"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.rocket.duration1.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(0.10, () -> config.rocketConfig.durationOne, val -> config.rocketConfig.durationOne = val)
                                     .controller(opt -> DoubleSliderControllerBuilder.create(opt)
                                             .range(0.0, 1.0)
@@ -326,6 +366,7 @@ public class YACL {
                             .option(Option.<Double>createBuilder()
                                     .name(Text.translatable("config.errrw.rocket.duration2"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.rocket.duration2.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(0.15, () -> config.rocketConfig.durationTwo, val -> config.rocketConfig.durationTwo = val)
                                     .controller(opt -> DoubleSliderControllerBuilder.create(opt)
                                             .range(0.0, 1.0)
@@ -334,6 +375,7 @@ public class YACL {
                             .option(Option.<Double>createBuilder()
                                     .name(Text.translatable("config.errrw.rocket.duration3"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.rocket.duration3.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(0.20, () -> config.rocketConfig.durationThree, val -> config.rocketConfig.durationThree = val)
                                     .controller(opt -> DoubleSliderControllerBuilder.create(opt)
                                             .range(0.0, 1.0)
@@ -343,7 +385,7 @@ public class YACL {
                     .build();
         }
 
-        private static ConfigCategory createElytraCategory(ModConfig config) {
+        private static ConfigCategory createElytraCategory(ModConfig config, boolean serverConfigEditable) {
             return ConfigCategory.createBuilder()
                     .name(Text.translatable("config.errrw.category.elytra"))
                     .tooltip(Text.translatable("config.errrw.category.elytra.tooltip"))
@@ -352,12 +394,14 @@ public class YACL {
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.elytra.enableMod"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.elytra.enableMod.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(true, () -> config.elytraConfig.enableMod, val -> config.elytraConfig.enableMod = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.elytra.enableBounce"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.elytra.enableBounce.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(true, () -> config.elytraConfig.enableBounce, val -> config.elytraConfig.enableBounce = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
@@ -367,12 +411,14 @@ public class YACL {
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.elytra.riptideNerf"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.elytra.riptideNerf.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(true, () -> config.elytraConfig.riptideNerf, val -> config.elytraConfig.riptideNerf = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
                             .option(Option.<Integer>createBuilder()
                                     .name(Text.translatable("config.errrw.elytra.riptideCooldown"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.elytra.riptideCooldown.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(1200, () -> config.elytraConfig.riptideCooldown, val -> config.elytraConfig.riptideCooldown = val)
                                     .controller(opt -> IntegerSliderControllerBuilder.create(opt)
                                             .range(0, 2400)
@@ -455,7 +501,7 @@ public class YACL {
                     .build();
         }
 
-        private static ConfigCategory createDebugCategory(ModConfig config) {
+        private static ConfigCategory createDebugCategory(ModConfig config, boolean serverConfigEditable) {
             return ConfigCategory.createBuilder()
                     .name(Text.translatable("config.errrw.category.debug"))
                     .tooltip(Text.translatable("config.errrw.category.debug.tooltip"))
@@ -464,12 +510,14 @@ public class YACL {
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.debug.enable"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.debug.enable.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(false, () -> config.debugMode.enableDebug, val -> config.debugMode.enableDebug = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.debug.commands"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.debug.commands.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(true, () -> config.debugMode.enableDebugCommands, val -> config.debugMode.enableDebugCommands = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
@@ -479,36 +527,42 @@ public class YACL {
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.debug.boost"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.debug.boost.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(false, () -> config.debugMode.boostDebug, val -> config.debugMode.boostDebug = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.debug.pull"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.debug.pull.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(false, () -> config.debugMode.pullDebug, val -> config.debugMode.pullDebug = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.debug.drag"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.debug.drag.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(false, () -> config.debugMode.dragDebug, val -> config.debugMode.dragDebug = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.debug.rocket"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.debug.rocket.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(false, () -> config.debugMode.rocketDebug, val -> config.debugMode.rocketDebug = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.debug.elytra"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.debug.elytra.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(false, () -> config.debugMode.elytraDebug, val -> config.debugMode.elytraDebug = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.debug.visual"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.debug.visual.tooltip")))
+                                    .available(serverConfigEditable)
                                     .binding(false, () -> config.debugMode.visualDebug, val -> config.debugMode.visualDebug = val)
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())

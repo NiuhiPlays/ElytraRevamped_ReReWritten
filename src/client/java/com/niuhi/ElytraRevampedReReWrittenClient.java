@@ -23,6 +23,7 @@ public class ElytraRevampedReReWrittenClient implements ClientModInitializer {
 							payload.x(), payload.y(), payload.z()), colors));
 		});
 
+		ModParticles.register();
 		ParticleFactoryRegistry.getInstance().register(ModParticles.COLORED_CAMPFIRE_SMOKE,
 				ColoredCampfireSmokeParticleFactory::new);
 	}

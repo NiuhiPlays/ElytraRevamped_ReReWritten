@@ -32,8 +32,8 @@ loom {
 
 	mods {
 		"elytra-revamped-rerewritten" {
-			sourceSet sourceSets.main
 			sourceSet sourceSets.client
+			sourceSet sourceSets.main
 		}
 	}
 
@@ -82,10 +82,60 @@ java {
 
 jar {
 	inputs.property "archivesName", project.base.archivesName
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
 	from("LICENSE") {
 		rename { "${it}_${inputs.properties.archivesName}"}
 	}
+
+	from(sourceSets.main.output)
+	exclude { details -> sourceSets.client.output.contains(details.file) }
+}
+
+tasks.named("sourcesJar") {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+	exclude { details -> sourceSets.client.allSource.contains(details.file) }
+}
+
+tasks.register("clientJar", Jar) {
+	archiveBaseName = project.base.archivesName
+	archiveVersion = project.version
+	archiveClassifier = "client-dev"
+	destinationDirectory = layout.buildDirectory.dir("libs")
+	dependsOn tasks.named("classes"), tasks.named("clientClasses")
+	from(sourceSets.main.output) {
+		exclude("fabric.mod.json")
+	}
+	from(sourceSets.client.output)
+}
+
+tasks.register("remapClientJar", net.fabricmc.loom.task.RemapJarTask) {
+	dependsOn tasks.named("clientJar")
+	archiveClassifier = "client"
+	inputFile = tasks.named("clientJar").get().archiveFile
+	addNestedDependencies = true
+}
+
+tasks.named("remapJar") {
+	archiveClassifier = "server"
+}
+
+tasks.register("universalJar", Jar) {
+	dependsOn tasks.named("remapJar"), tasks.named("remapClientJar")
+	archiveBaseName = project.base.archivesName
+	archiveVersion = project.version
+	archiveClassifier = ""
+	destinationDirectory = layout.buildDirectory.dir("libs")
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+	from(zipTree(tasks.named("remapJar").get().archiveFile))
+	from(tasks.named("remapClientJar").get().archiveFile) {
+		into("META-INF/jars")
+		rename { "elytra-revamped-rerewritten-client.jar" }
+	}
+}
+
+tasks.named("build") {
+	dependsOn tasks.named("universalJar")
 }
 
 // configure the maven publication
