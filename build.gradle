@@ -66,6 +66,14 @@ processResources {
 	}
 }
 
+tasks.named("processClientResources") {
+	inputs.property "version", project.version
+
+	filesMatching("elytra-revamped-rerewritten-client.mod.json") {
+		expand "version": inputs.properties.version
+	}
+}
+
 tasks.withType(JavaCompile).configureEach {
 	it.options.release = 21
 }
@@ -106,7 +114,13 @@ tasks.register("clientJar", Jar) {
 	from(sourceSets.main.output) {
 		exclude("fabric.mod.json")
 	}
-	from(sourceSets.client.output)
+	from(sourceSets.client.output) {
+		exclude("elytra-revamped-rerewritten-client.mod.json")
+	}
+	from(sourceSets.client.resources) {
+		include("elytra-revamped-rerewritten-client.mod.json")
+		rename { "fabric.mod.json" }
+	}
 }
 
 tasks.register("remapClientJar", net.fabricmc.loom.task.RemapJarTask) {

@@ -58,7 +58,7 @@ public class ModConfig {
         public boolean enableControllableDrag = true;
         public double dragAmount = 0.92;
 
-        public boolean enableAirDrag = true;
+        public boolean enableAirDrag = false;
         public double airDragAmount = 0.95;
     }
 
@@ -70,16 +70,14 @@ public class ModConfig {
         public boolean initialBoost = false;
         public int gracePeriodTicks = 20;
 
-        public boolean changedDuration = false;
-        public double durationOne = 0.10;
-        public double durationTwo = 0.15;
-        public double durationThree = 0.20;
+        public boolean midflightBoost = false;
+        public double midflightBoostAmount = 0.4;
     }
 
     // All config options for the Elytra & Extra's
     public static class ElytraConfig {
         public boolean enableMod = true;
-        public boolean enableBounce = true;
+        public boolean enableBounce = false;
 
         public boolean riptideNerf = true;
         public int riptideCooldown = 1200;

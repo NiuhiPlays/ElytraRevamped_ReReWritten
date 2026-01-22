@@ -3,8 +3,11 @@ package com.niuhi.util;
 import com.niuhi.config.ModConfig;
 import com.niuhi.features.campfires.CampfireBoost;
 import com.niuhi.features.campfires.CampfirePull;
+import com.niuhi.features.drag.AirDrag;
 import com.niuhi.features.drag.ControllableDrag;
+import com.niuhi.features.elytra.ElytraBounce;
 import com.niuhi.features.elytra.ElytraDetection;
+import com.niuhi.features.elytra.RiptideCooldown;
 import com.niuhi.features.fireworkrockets.RocketFlair;
 import com.niuhi.features.fireworkrockets.RocketGrace;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -38,6 +41,9 @@ public final class ServerTick {
         }
 
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+            RiptideCooldown.clearOnLanding(player, config);
+            RiptideCooldown.applyPending(player, config, serverTicks);
+            ElytraBounce.tryBounce(player, config, serverTicks);
             if (!ELYTRA_DETECTION.isFlying(player)) {
                 continue;
             }
@@ -49,6 +55,7 @@ public final class ServerTick {
                 CampfirePull.tryPull(player, config, serverTicks);
             }
             ControllableDrag.tryApply(player, config, serverTicks);
+            AirDrag.tryApply(player, config, serverTicks);
         }
     }
 }

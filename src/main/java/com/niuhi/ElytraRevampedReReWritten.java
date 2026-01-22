@@ -2,7 +2,9 @@ package com.niuhi;
 
 import com.niuhi.config.ModConfig;
 import com.niuhi.config.ServerCommands;
+import com.niuhi.features.elytra.RiptideCooldown;
 import com.niuhi.features.fireworkrockets.DisableRockets;
+import com.niuhi.features.fireworkrockets.FlightBoost;
 import com.niuhi.network.ModNetworking;
 import com.niuhi.util.ServerTick;
 import net.fabricmc.api.ModInitializer;
@@ -46,6 +48,8 @@ public class ElytraRevampedReReWritten implements ModInitializer {
 
 		ServerTick.register();
 		DisableRockets.register();
+		FlightBoost.register();
+		RiptideCooldown.register();
 		ServerCommands.register();
 		ModNetworking.registerPayloads();
 	}

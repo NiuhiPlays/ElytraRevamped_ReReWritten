@@ -4,7 +4,8 @@ public enum VisualEventType {
     BOOST(0),
     PULL(1),
     DRAG(2),
-    ROCKET_FLAIR(3);
+    ROCKET_FLAIR(3),
+    AIR_DRAG(4);
 
     private final int id;
 
