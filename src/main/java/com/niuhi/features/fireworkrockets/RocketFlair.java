@@ -36,8 +36,8 @@ public final class RocketFlair {
         if (durationTicks <= 0) {
             durationTicks = 20;
         }
-        Integer color = getRocketColor(stack);
-        ACTIVE_FLAIRS.put(player.getUuid(), new FlairState(durationTicks, color));
+        int[] colors = getRocketColors(stack);
+        ACTIVE_FLAIRS.put(player.getUuid(), new FlairState(durationTicks, colors));
         playActivationSound(player);
     }
 
@@ -62,11 +62,11 @@ public final class RocketFlair {
             if (state.remainingTicks % EMIT_INTERVAL_TICKS != 0) {
                 continue;
             }
-            emitFlair(server, player, state.color);
+            emitFlair(server, player, state.colors);
         }
     }
 
-    private static void emitFlair(MinecraftServer server, ServerPlayerEntity source, Integer color) {
+    private static void emitFlair(MinecraftServer server, ServerPlayerEntity source, int[] colors) {
         ServerWorld world = source.getServerWorld();
         Vec3d pos = source.getPos();
         ModConfig config = ModConfig.getInstance();
@@ -82,7 +82,7 @@ public final class RocketFlair {
                 continue;
             }
             if (ModNetworking.canSendVisuals(target)) {
-                ModNetworking.sendVisualEvent(target, VisualEventType.ROCKET_FLAIR, pos, color);
+                ModNetworking.sendVisualEvent(target, VisualEventType.ROCKET_FLAIR, pos, colors);
             } else {
                 world.spawnParticles(target, ParticleTypes.CAMPFIRE_COSY_SMOKE, false, false,
                         pos.x, pos.y + 0.1, pos.z,
@@ -114,26 +114,30 @@ public final class RocketFlair {
         return flight * 20;
     }
 
-    private static Integer getRocketColor(ItemStack stack) {
+    private static int[] getRocketColors(ItemStack stack) {
         FireworksComponent fireworks = stack.get(DataComponentTypes.FIREWORKS);
         if (fireworks == null || fireworks.explosions().isEmpty()) {
-            return null;
+            return new int[0];
         }
         FireworkExplosionComponent explosion = fireworks.explosions().get(0);
         IntList colors = explosion.colors();
         if (colors.isEmpty()) {
-            return null;
+            return new int[0];
         }
-        return colors.getInt(0);
+        int[] result = new int[colors.size()];
+        for (int i = 0; i < colors.size(); i++) {
+            result[i] = colors.getInt(i);
+        }
+        return result;
     }
 
     private static final class FlairState {
         private int remainingTicks;
-        private final Integer color;
+        private final int[] colors;
 
-        private FlairState(int remainingTicks, Integer color) {
+        private FlairState(int remainingTicks, int[] colors) {
             this.remainingTicks = remainingTicks;
-            this.color = color;
+            this.colors = colors;
         }
     }
 }

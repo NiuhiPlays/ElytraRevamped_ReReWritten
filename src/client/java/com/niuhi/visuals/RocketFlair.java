@@ -10,17 +10,18 @@ public final class RocketFlair {
     private RocketFlair() {
     }
 
-    public static void play(ClientWorld world, Vec3d pos, Integer color) {
+    public static void play(ClientWorld world, Vec3d pos, int[] colors) {
         ModConfig config = ModConfig.getInstance();
         if (config.visualConfig.RocketParticles) {
-            int rgb = color != null ? color : 0xFFFFFF;
-            spawnParticles(world, pos, rgb);
+            spawnParticles(world, pos, colors);
         }
     }
 
-    private static void spawnParticles(ClientWorld world, Vec3d pos, int rgb) {
-        ColoredCampfireSmokeParticleFactory.setNextColor(rgb);
+    private static void spawnParticles(ClientWorld world, Vec3d pos, int[] colors) {
+        int[] palette = (colors != null && colors.length > 0) ? colors : new int[] { 0xFFFFFF };
         for (int i = 0; i < 8; i++) {
+            int color = palette[i % palette.length];
+            ColoredCampfireSmokeParticleFactory.setNextColor(color);
             world.addParticle(ModParticles.COLORED_CAMPFIRE_SMOKE,
                     pos.x, pos.y + 0.1, pos.z,
                     world.random.nextGaussian() * 0.02,

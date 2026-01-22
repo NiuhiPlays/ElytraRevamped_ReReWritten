@@ -13,7 +13,7 @@ public final class VisualEventHandler {
     private VisualEventHandler() {
     }
 
-    public static void handleEvent(VisualEventType type, Vec3d position, Integer color) {
+    public static void handleEvent(VisualEventType type, Vec3d position, int[] colors) {
         ClientWorld world = MinecraftClient.getInstance().world;
         if (world == null) {
             return;
@@ -23,7 +23,7 @@ public final class VisualEventHandler {
             case BOOST -> BoostParticles.play(world, position);
             case PULL -> PullParticles.play(world, position);
             case DRAG -> DragParticles.play(world, position);
-            case ROCKET_FLAIR -> RocketFlair.play(world, position, color);
+            case ROCKET_FLAIR -> RocketFlair.play(world, position, colors);
         }
     }
 }

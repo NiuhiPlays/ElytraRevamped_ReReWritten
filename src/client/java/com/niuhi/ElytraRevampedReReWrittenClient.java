@@ -17,10 +17,10 @@ public class ElytraRevampedReReWrittenClient implements ClientModInitializer {
 		ClientPlayNetworking.registerGlobalReceiver(VisualEventPayload.ID, (payload, context) -> {
 			int typeId = payload.typeId();
 			VisualEventType type = VisualEventType.fromId(typeId);
-			Integer color = payload.hasColor() ? payload.color() : null;
+			int[] colors = payload.hasColor() ? payload.colors() : null;
 			context.client().execute(() ->
 					VisualEventHandler.handleEvent(type, new net.minecraft.util.math.Vec3d(
-							payload.x(), payload.y(), payload.z()), color));
+							payload.x(), payload.y(), payload.z()), colors));
 		});
 
 		ParticleFactoryRegistry.getInstance().register(ModParticles.COLORED_CAMPFIRE_SMOKE,

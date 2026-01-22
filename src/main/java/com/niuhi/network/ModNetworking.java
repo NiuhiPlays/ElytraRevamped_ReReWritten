@@ -22,21 +22,26 @@ public final class ModNetworking {
     }
 
     public static void sendVisualEvent(ServerPlayerEntity player, VisualEventType type, Vec3d position) {
-        sendVisualEvent(player, type, position, null);
+        sendVisualEvent(player, type, position, (int[]) null);
     }
 
     public static void sendVisualEvent(ServerPlayerEntity player, VisualEventType type, Vec3d position, Integer color) {
+        int[] colors = color != null ? new int[] { color } : null;
+        sendVisualEvent(player, type, position, colors);
+    }
+
+    public static void sendVisualEvent(ServerPlayerEntity player, VisualEventType type, Vec3d position, int[] colors) {
         if (!canSendVisuals(player)) {
             return;
         }
-        int packedColor = color != null ? color : 0;
+        int[] payloadColors = colors != null ? colors : new int[0];
         VisualEventPayload payload = new VisualEventPayload(
                 type.getId(),
                 position.x,
                 position.y,
                 position.z,
-                color != null,
-                packedColor
+                payloadColors.length > 0,
+                payloadColors
         );
         ServerPlayNetworking.send(player, payload);
 
@@ -45,7 +50,7 @@ public final class ModNetworking {
         logger.log("VISUALS", "Sent visual event=" + type.name()
                 + " player=" + player.getName().getString()
                 + " pos=" + position.x + "," + position.y + "," + position.z
-                + (color != null ? " color=" + color : ""));
+                + (colors != null && colors.length > 0 ? " colors=" + colors.length : ""));
     }
 
     public static boolean canSendVisuals(ServerPlayerEntity player) {

@@ -6,7 +6,7 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.Identifier;
 
-public record VisualEventPayload(int typeId, double x, double y, double z, boolean hasColor, int color)
+public record VisualEventPayload(int typeId, double x, double y, double z, boolean hasColor, int[] colors)
         implements CustomPayload {
     public static final Id<VisualEventPayload> ID =
             new Id<>(Identifier.of(ElytraRevampedReReWritten.MOD_ID, "visual_event"));
@@ -19,7 +19,10 @@ public record VisualEventPayload(int typeId, double x, double y, double z, boole
                 buf.writeDouble(value.z());
                 buf.writeBoolean(value.hasColor());
                 if (value.hasColor()) {
-                    buf.writeInt(value.color());
+                    buf.writeVarInt(value.colors().length);
+                    for (int color : value.colors()) {
+                        buf.writeInt(color);
+                    }
                 }
             },
             buf -> {
@@ -28,8 +31,17 @@ public record VisualEventPayload(int typeId, double x, double y, double z, boole
                 double y = buf.readDouble();
                 double z = buf.readDouble();
                 boolean hasColor = buf.readBoolean();
-                int color = hasColor ? buf.readInt() : 0;
-                return new VisualEventPayload(typeId, x, y, z, hasColor, color);
+                int[] colors = new int[0];
+                if (hasColor) {
+                    int count = buf.readVarInt();
+                    if (count > 0) {
+                        colors = new int[count];
+                        for (int i = 0; i < count; i++) {
+                            colors[i] = buf.readInt();
+                        }
+                    }
+                }
+                return new VisualEventPayload(typeId, x, y, z, hasColor, colors);
             }
     );
 
