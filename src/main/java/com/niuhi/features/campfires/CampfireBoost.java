@@ -19,6 +19,7 @@ import java.util.UUID;
 
 public final class CampfireBoost {
     private static final Map<UUID, Integer> LAST_BOOST_TICK = new HashMap<>();
+    private static final double MIN_BOOST_SCALE = 0.15;
 
     private CampfireBoost() {
     }
@@ -108,7 +109,7 @@ public final class CampfireBoost {
         }
         double ratio = (distance - 1.0) / (double) (range - 1);
         ratio = MathHelper.clamp(ratio, 0.0, 1.0);
-        return Math.pow(1.0 - ratio, 2);
+        return Math.max(MIN_BOOST_SCALE, 1.0 - ratio);
     }
 
     private static String formatPos(BlockPos pos) {

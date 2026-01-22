@@ -109,7 +109,7 @@ public final class CampfirePull {
         }
         double ratio = (distance - 1.0) / (double) (range - 1);
         ratio = MathHelper.clamp(ratio, 0.0, 1.0);
-        return Math.max(MIN_PULL_SCALE, Math.pow(ratio, 2));
+        return Math.max(MIN_PULL_SCALE, ratio);
     }
 
     private static String formatPos(BlockPos pos) {
