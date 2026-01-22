@@ -14,12 +14,8 @@ import java.util.Map;
 import java.util.UUID;
 
 public class ElytraDetection {
-    private final boolean accessoriesLoaded;
+    private static final boolean ACCESSORIES_LOADED = FabricLoader.getInstance().isModLoaded("accessories");
     private static final Map<UUID, ElytraState> LAST_STATE = new HashMap<>();
-
-    public ElytraDetection() {
-        this.accessoriesLoaded = FabricLoader.getInstance().isModLoaded("accessories");
-    }
 
     public boolean isFlying(ServerPlayerEntity player) {
         boolean isGliding = player.isGliding();
@@ -44,12 +40,9 @@ public class ElytraDetection {
         boolean hasElytraEquipped = player.getEquippedStack(EquipmentSlot.CHEST).isOf(Items.ELYTRA);
         boolean result = hasElytraEquipped;
 
-        if (accessoriesLoaded) {
-            try {
-                boolean hasAccessoryElytra = Accessories.hasElytraEquipped(player);
-                result = hasElytraEquipped || hasAccessoryElytra;
-            } catch (Exception ignored){
-            }
+        if (ACCESSORIES_LOADED) {
+            boolean hasAccessoryElytra = Accessories.hasElytraEquipped(player);
+            result = hasElytraEquipped || hasAccessoryElytra;
         }
         return result;
     }
