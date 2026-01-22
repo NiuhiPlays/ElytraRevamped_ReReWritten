@@ -1,5 +1,7 @@
 package com.niuhi.features.campfires;
 
+import com.niuhi.ElytraRevampedReReWritten;
+import com.niuhi.config.DebugLogger;
 import com.niuhi.config.ModConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -28,19 +30,27 @@ public final class CampfirePull {
             return;
         }
 
-        double strength = findPullStrength(player, config);
-        if (strength <= 0.0) {
+        PullResult result = findPullStrength(player, config);
+        if (result.strength <= 0.0) {
             return;
         }
 
         Vec3d velocity = player.getVelocity();
-        player.setVelocity(velocity.x, velocity.y - strength, velocity.z);
+        player.setVelocity(velocity.x, velocity.y - result.strength, velocity.z);
         player.velocityModified = true;
 
         LAST_PULL_TICK.put(player.getUuid(), serverTick);
+
+        DebugLogger logger = new DebugLogger(ElytraRevampedReReWritten.MOD_ID, config);
+        logger.log("PULL", "Applied pull=" + result.strength
+                + " distance=" + String.format("%.2f", result.distance)
+                + " hay=" + result.hasHay
+                + " gridMultiplier=" + String.format("%.2f", result.gridMultiplier)
+                + " campfire=" + formatPos(result.campfirePos)
+                + " player=" + player.getName().getString());
     }
 
-    private static double findPullStrength(ServerPlayerEntity player, ModConfig config) {
+    private static PullResult findPullStrength(ServerPlayerEntity player, ModConfig config) {
         World world = player.getWorld();
         BlockPos playerPos = player.getBlockPos();
 
@@ -49,7 +59,7 @@ public final class CampfirePull {
             maxRange = Math.max(maxRange, config.pullConfig.hayDetectionHeight);
         }
 
-        double bestStrength = 0.0;
+        PullResult best = new PullResult();
 
         for (int dy = 1; dy <= maxRange; dy++) {
             BlockPos basePos = playerPos.down(dy);
@@ -73,14 +83,18 @@ public final class CampfirePull {
                     double scale = getScale(config.pullConfig.exponentialPull, distance, range);
                     double strength = baseAmount * multiplier * scale;
 
-                    if (strength > bestStrength) {
-                        bestStrength = strength;
+                    if (strength > best.strength) {
+                        best.strength = strength;
+                        best.distance = distance;
+                        best.campfirePos = campfirePos;
+                        best.hasHay = hasHay;
+                        best.gridMultiplier = multiplier;
                     }
                 }
             }
         }
 
-        return bestStrength;
+        return best;
     }
 
     private static boolean isLitSoulCampfire(BlockState state) {
@@ -94,5 +108,20 @@ public final class CampfirePull {
         double ratio = (distance - 1.0) / (double) (range - 1);
         ratio = MathHelper.clamp(ratio, 0.0, 1.0);
         return Math.max(MIN_PULL_SCALE, Math.pow(ratio, 2));
+    }
+
+    private static String formatPos(BlockPos pos) {
+        if (pos == null) {
+            return "unknown";
+        }
+        return pos.getX() + "," + pos.getY() + "," + pos.getZ();
+    }
+
+    private static final class PullResult {
+        private double strength = 0.0;
+        private double distance = 0.0;
+        private BlockPos campfirePos;
+        private boolean hasHay;
+        private double gridMultiplier = 1.0;
     }
 }

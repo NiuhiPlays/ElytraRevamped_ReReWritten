@@ -1,41 +1,5 @@
 TODO
 
-- Detect player wearing & Flying with Elytra
-	- Vanilla
-		- Check for IsGliding
-		- Check for Wearing Elytra in CHEST
-	- Accessories (Compat)
-		- Figure this shit out?
-		- Check for Elytra in Cape slot
-
-- Disable Firework Rockets 
-	- Add Grace Period for one time use
-		- Configurable, by default 20 Ticks time to Use rocket.
-	- Add Smoke Flair when using rockets mid flight
-		- See Visuals and Sounds for more info on this feature.
-
-- Detect Fireplace (LIT)
-	- Normal
-	- Soul fire
-
-- Detect Hay underneath Campfires that are LIT
-	- Hay changes boost amount
-
-- Make Campfires Boost	(All Options are Configurable)
-	- Normal pushes Upwards
-		- Apply Boost if player flies in between 1 to 10 blocks above the Campfire
-		- If Hay is present, make it between 1 to 25.
-		- Also exponentially make the boost less the further the player is from the Campfire.
-	- Soul pulls Downwards
-		- Apply Pull if player flies in between 1 to 10 blocks above the Soul Campfire
-		- If Hay is present, make it between 1 to 25.
-		- Also exponentially make the pull less the closer the player is from the Soul Campfire.
-	- Campfires together in a grid adds extra Boost or Pulls
-		- 1x1 = Default values
-		- 2x2 = 25% stronger
-		- 3x3 = 50% stronger
-
-
 - Add Controllable Drag (Configurable Option)
 	- Press Shift to Use
 
@@ -81,3 +45,39 @@ New Features?
 
 - Add Elytra Bounce (Configurable Option)
 	- By Default OFF
+
+
+DONE
+
+- Detect player wearing & Flying with Elytra
+	- Vanilla
+		- Check for IsGliding
+		- Check for Wearing Elytra in CHEST
+	- Accessories (Compat)
+		- Figure this shit out?
+		- Check for Elytra in Cape slot
+
+- Disable Firework Rockets 
+	- Add Grace Period for one time use
+		- Configurable, by default 20 Ticks time to Use rocket.
+
+- Detect Fireplace (LIT)
+	- Normal
+	- Soul fire
+
+- Detect Hay underneath Campfires that are LIT
+	- Hay changes boost amount
+
+- Make Campfires Boost	(All Options are Configurable)
+	- Normal pushes Upwards
+		- Apply Boost if player flies in between 1 to 10 blocks above the Campfire
+		- If Hay is present, make it between 1 to 25.
+		- Also exponentially make the boost less the further the player is from the Campfire.
+	- Soul pulls Downwards
+		- Apply Pull if player flies in between 1 to 10 blocks above the Soul Campfire
+		- If Hay is present, make it between 1 to 25.
+		- Also exponentially make the pull less the closer the player is from the Soul Campfire.
+	- Campfires together in a grid adds extra Boost or Pulls
+		- 1x1 = Default values
+		- 2x2 = 25% stronger
+		- 3x3 = 50% stronger

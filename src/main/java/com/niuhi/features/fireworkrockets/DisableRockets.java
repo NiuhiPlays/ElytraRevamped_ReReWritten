@@ -1,5 +1,7 @@
 package com.niuhi.features.fireworkrockets;
 
+import com.niuhi.ElytraRevampedReReWritten;
+import com.niuhi.config.DebugLogger;
 import com.niuhi.config.ModConfig;
 import com.niuhi.util.ServerTick;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
@@ -36,9 +38,15 @@ public final class DisableRockets {
             if (config.rocketConfig.initialBoost
                     && RocketGrace.canUseRocket(serverPlayer, serverTick, config.rocketConfig.gracePeriodTicks)) {
                 RocketGrace.markRocketUsed(serverPlayer);
+                DebugLogger logger = new DebugLogger(ElytraRevampedReReWritten.MOD_ID, config);
+                logger.log("ROCKET", "Allowed grace rocket for " + serverPlayer.getName().getString()
+                        + " tick=" + serverTick);
                 return ActionResult.PASS;
             }
 
+            DebugLogger logger = new DebugLogger(ElytraRevampedReReWritten.MOD_ID, config);
+            logger.log("ROCKET", "Blocked rocket for " + serverPlayer.getName().getString()
+                    + " tick=" + serverTick);
             return ActionResult.FAIL;
         });
     }

@@ -1,5 +1,7 @@
 package com.niuhi.features.campfires;
 
+import com.niuhi.ElytraRevampedReReWritten;
+import com.niuhi.config.DebugLogger;
 import com.niuhi.config.ModConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -27,19 +29,27 @@ public final class CampfireBoost {
             return;
         }
 
-        double strength = findBoostStrength(player, config);
-        if (strength <= 0.0) {
+        BoostResult result = findBoostStrength(player, config);
+        if (result.strength <= 0.0) {
             return;
         }
 
         Vec3d velocity = player.getVelocity();
-        player.setVelocity(velocity.x, velocity.y + strength, velocity.z);
+        player.setVelocity(velocity.x, velocity.y + result.strength, velocity.z);
         player.velocityModified = true;
 
         LAST_BOOST_TICK.put(player.getUuid(), serverTick);
+
+        DebugLogger logger = new DebugLogger(ElytraRevampedReReWritten.MOD_ID, config);
+        logger.log("BOOST", "Applied boost=" + result.strength
+                + " distance=" + String.format("%.2f", result.distance)
+                + " hay=" + result.hasHay
+                + " gridMultiplier=" + String.format("%.2f", result.gridMultiplier)
+                + " campfire=" + formatPos(result.campfirePos)
+                + " player=" + player.getName().getString());
     }
 
-    private static double findBoostStrength(ServerPlayerEntity player, ModConfig config) {
+    private static BoostResult findBoostStrength(ServerPlayerEntity player, ModConfig config) {
         World world = player.getWorld();
         BlockPos playerPos = player.getBlockPos();
 
@@ -48,7 +58,7 @@ public final class CampfireBoost {
             maxRange = Math.max(maxRange, config.boostConfig.hayDetectionHeight);
         }
 
-        double bestStrength = 0.0;
+        BoostResult best = new BoostResult();
 
         for (int dy = 1; dy <= maxRange; dy++) {
             BlockPos basePos = playerPos.down(dy);
@@ -72,14 +82,18 @@ public final class CampfireBoost {
                     double scale = getScale(config.boostConfig.exponentialBoost, distance, range);
                     double strength = baseAmount * multiplier * scale;
 
-                    if (strength > bestStrength) {
-                        bestStrength = strength;
+                    if (strength > best.strength) {
+                        best.strength = strength;
+                        best.distance = distance;
+                        best.campfirePos = campfirePos;
+                        best.hasHay = hasHay;
+                        best.gridMultiplier = multiplier;
                     }
                 }
             }
         }
 
-        return bestStrength;
+        return best;
     }
 
     private static boolean isLitCampfire(BlockState state) {
@@ -93,5 +107,20 @@ public final class CampfireBoost {
         double ratio = (distance - 1.0) / (double) (range - 1);
         ratio = MathHelper.clamp(ratio, 0.0, 1.0);
         return Math.pow(1.0 - ratio, 2);
+    }
+
+    private static String formatPos(BlockPos pos) {
+        if (pos == null) {
+            return "unknown";
+        }
+        return pos.getX() + "," + pos.getY() + "," + pos.getZ();
+    }
+
+    private static final class BoostResult {
+        private double strength = 0.0;
+        private double distance = 0.0;
+        private BlockPos campfirePos;
+        private boolean hasHay;
+        private double gridMultiplier = 1.0;
     }
 }
