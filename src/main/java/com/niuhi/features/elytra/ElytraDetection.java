@@ -31,7 +31,6 @@ public class ElytraDetection {
             } catch (Exception ignored){
             }
         }
-        System.out.print(isWearingElytra(player));
         return result;
     }
 }

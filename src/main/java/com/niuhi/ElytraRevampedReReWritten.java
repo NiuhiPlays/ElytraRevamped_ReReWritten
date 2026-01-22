@@ -1,6 +1,8 @@
 package com.niuhi;
 
 import com.niuhi.config.ModConfig;
+import com.niuhi.features.fireworkrockets.DisableRockets;
+import com.niuhi.util.ServerTick;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.loader.api.FabricLoader;
@@ -39,5 +41,8 @@ public class ElytraRevampedReReWritten implements ModInitializer {
 		} else {
 			LOGGER.info("Debug mode is DISABLED. Basic logging on the way!");
 		}
+
+		ServerTick.register();
+		DisableRockets.register();
 	}
 }

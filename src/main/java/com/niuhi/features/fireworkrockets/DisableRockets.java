@@ -1,4 +1,45 @@
 package com.niuhi.features.fireworkrockets;
 
-public class DisableRockets {
+import com.niuhi.config.ModConfig;
+import com.niuhi.util.ServerTick;
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.minecraft.item.Items;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.ActionResult;
+
+public final class DisableRockets {
+    private DisableRockets() {
+    }
+
+    public static void register() {
+        UseItemCallback.EVENT.register((player, world, hand) -> {
+            if (world.isClient) {
+                return ActionResult.PASS;
+            }
+
+            ModConfig config = ModConfig.getInstance();
+            if (!config.rocketConfig.DisableRockets) {
+                return ActionResult.PASS;
+            }
+
+            if (!player.getStackInHand(hand).isOf(Items.FIREWORK_ROCKET)) {
+                return ActionResult.PASS;
+            }
+
+            if (!(player instanceof ServerPlayerEntity serverPlayer) || !serverPlayer.isGliding()) {
+                return ActionResult.PASS;
+            }
+
+            int serverTick = ServerTick.getServerTicks();
+            RocketGrace.ensureGlideStart(serverPlayer, serverTick);
+
+            if (config.rocketConfig.initialBoost
+                    && RocketGrace.canUseRocket(serverPlayer, serverTick, config.rocketConfig.gracePeriodTicks)) {
+                RocketGrace.markRocketUsed(serverPlayer);
+                return ActionResult.PASS;
+            }
+
+            return ActionResult.FAIL;
+        });
+    }
 }
