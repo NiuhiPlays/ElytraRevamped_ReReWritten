@@ -1,7 +1,6 @@
 TODO
 
 List of versions (Every version has code changes if they aren't written together in the same line)
-1.21.4
 1.21.5 - 1.21.8
 1.21.9 - 1.21.10
 
@@ -79,3 +78,6 @@ DONE
 - ModMenu support (YACL)
 	- Make everything configurable using YACL
 	- Make everything configurable using .JSON file
+
+List of versions (Every version has code changes if they aren't written together in the same line)
+1.21.4
