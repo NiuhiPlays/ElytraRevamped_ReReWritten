@@ -11,17 +11,6 @@ Backport?
 
 New Features?
 
-- Add Midflight boost
-	- Add a Firework star to the Rocket for a 1 Time extra Boost.
-
-- Check if a Riptide cooldown is possible
-
-- Add Air Drag based on world height (Configurable Option)
-	- By Default OFF
-
-- Add Elytra Bounce (Configurable Option)
-	- By Default OFF
-
 
 DONE
 
@@ -60,6 +49,18 @@ DONE
 
 - Add Controllable Drag (Configurable Option)
 	- Press Shift to Use
+
+- Add Midflight boost
+	- Add a Firework star to the Rocket for a 1 Time extra Boost.
+
+- Check if a Riptide cooldown is possible
+
+- Add Air Drag based on world height (Configurable Option)
+	- By Default OFF
+
+- Add Elytra Bounce (Configurable Option)
+	- By Default OFF
+	- Experimental
 
 
 - Add Visuals and Sounds (Configurable Option)
