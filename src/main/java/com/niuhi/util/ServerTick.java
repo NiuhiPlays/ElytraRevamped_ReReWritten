@@ -5,6 +5,7 @@ import com.niuhi.features.campfires.CampfireBoost;
 import com.niuhi.features.campfires.CampfirePull;
 import com.niuhi.features.drag.ControllableDrag;
 import com.niuhi.features.elytra.ElytraDetection;
+import com.niuhi.features.fireworkrockets.RocketFlair;
 import com.niuhi.features.fireworkrockets.RocketGrace;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.server.MinecraftServer;
@@ -30,6 +31,7 @@ public final class ServerTick {
         ModConfig config = ModConfig.getInstance();
 
         RocketGrace.onServerTick(serverTicks, server);
+        RocketFlair.tick(server);
 
         if (!config.elytraConfig.enableMod) {
             return;

@@ -26,7 +26,7 @@ public final class ModNetworking {
     }
 
     public static void sendVisualEvent(ServerPlayerEntity player, VisualEventType type, Vec3d position, Integer color) {
-        if (!ServerPlayNetworking.canSend(player, VisualEventPayload.ID)) {
+        if (!canSendVisuals(player)) {
             return;
         }
         int packedColor = color != null ? color : 0;
@@ -46,5 +46,9 @@ public final class ModNetworking {
                 + " player=" + player.getName().getString()
                 + " pos=" + position.x + "," + position.y + "," + position.z
                 + (color != null ? " color=" + color : ""));
+    }
+
+    public static boolean canSendVisuals(ServerPlayerEntity player) {
+        return ServerPlayNetworking.canSend(player, VisualEventPayload.ID);
     }
 }

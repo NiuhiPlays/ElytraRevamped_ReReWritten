@@ -7,7 +7,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 
 public final class PullParticles {
-    private static final Identifier SOUND_ID = Identifier.of("minecraft", "entity.breeze.wind_charge_burst");
+    private static final Identifier SOUND_ID = Identifier.of("minecraft", "entity.breeze.idle_air");
 
     private PullParticles() {
     }

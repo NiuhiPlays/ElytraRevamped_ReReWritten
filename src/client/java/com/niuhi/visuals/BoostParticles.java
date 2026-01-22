@@ -7,7 +7,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 
 public final class BoostParticles {
-    private static final Identifier SOUND_ID = Identifier.of("minecraft", "entity.breeze.wind_charge_burst");
+    private static final Identifier SOUND_ID = Identifier.of("minecraft", "entity.breeze.idle_ground");
 
     private BoostParticles() {
     }
@@ -24,7 +24,7 @@ public final class BoostParticles {
 
     private static void spawnParticles(ClientWorld world, Vec3d pos) {
         for (int i = 0; i < 8; i++) {
-            world.addParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE,
+            world.addParticle(ParticleTypes.FLAME,
                     pos.x, pos.y + 0.2, pos.z,
                     world.random.nextGaussian() * 0.02,
                     0.08,

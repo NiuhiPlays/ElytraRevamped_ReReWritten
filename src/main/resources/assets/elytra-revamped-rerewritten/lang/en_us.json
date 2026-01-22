@@ -13,8 +13,6 @@
   "config.errrw.category.elytra.tooltip": "Configure all related options for elytra mechanics",
   "config.errrw.category.visual": "Visual Configurations",
   "config.errrw.category.visual.tooltip": "Configure all related options for visual effects",
-  "config.errrw.category.sound": "Sound Configurations",
-  "config.errrw.category.sound.tooltip": "Configure all related options for sound effects",
   "config.errrw.category.debug": "Debug Configurations",
   "config.errrw.category.debug.tooltip": "Configure all related options for debug options",
 
@@ -34,7 +32,7 @@
   "config.errrw.group.elytra.general": "General Elytra",
   "config.errrw.group.elytra.riptide": "Riptide",
   "config.errrw.group.visual.particles": "Particles",
-  "config.errrw.group.sound.general": "Sounds",
+  "config.errrw.group.visual.sounds": "Sounds",
   "config.errrw.group.debug.general": "General Debug",
   "config.errrw.group.debug.specific": "Specific Debug Options",
 

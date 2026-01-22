@@ -3,18 +3,11 @@ package com.niuhi.features.fireworkrockets;
 import com.niuhi.ElytraRevampedReReWritten;
 import com.niuhi.config.DebugLogger;
 import com.niuhi.config.ModConfig;
-import com.niuhi.network.ModNetworking;
-import com.niuhi.network.VisualEventType;
 import com.niuhi.util.ServerTick;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.FireworkExplosionComponent;
-import net.minecraft.component.type.FireworksComponent;
 import net.minecraft.item.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
-import it.unimi.dsi.fastutil.ints.IntList;
 
 public final class DisableRockets {
     private DisableRockets() {
@@ -39,10 +32,6 @@ public final class DisableRockets {
             RocketGrace.ensureGlideStart(serverPlayer, serverTick);
 
             if (!config.rocketConfig.DisableRockets) {
-                if (config.rocketConfig.rocketFlair) {
-                    Integer color = getRocketColor(player.getStackInHand(hand));
-                    ModNetworking.sendVisualEvent(serverPlayer, VisualEventType.ROCKET_FLAIR, serverPlayer.getPos(), color);
-                }
                 return ActionResult.PASS;
             }
 
@@ -52,30 +41,16 @@ public final class DisableRockets {
                 DebugLogger logger = new DebugLogger(ElytraRevampedReReWritten.MOD_ID, config);
                 logger.log("ROCKET", "Allowed grace rocket for " + serverPlayer.getName().getString()
                         + " tick=" + serverTick);
-                if (config.rocketConfig.rocketFlair) {
-                    Integer color = getRocketColor(player.getStackInHand(hand));
-                    ModNetworking.sendVisualEvent(serverPlayer, VisualEventType.ROCKET_FLAIR, serverPlayer.getPos(), color);
-                }
                 return ActionResult.PASS;
             }
 
             DebugLogger logger = new DebugLogger(ElytraRevampedReReWritten.MOD_ID, config);
             logger.log("ROCKET", "Blocked rocket for " + serverPlayer.getName().getString()
                     + " tick=" + serverTick);
+            if (config.rocketConfig.rocketFlair) {
+                RocketFlair.trigger(serverPlayer, player.getStackInHand(hand));
+            }
             return ActionResult.FAIL;
         });
-    }
-
-    private static Integer getRocketColor(ItemStack stack) {
-        FireworksComponent fireworks = stack.get(DataComponentTypes.FIREWORKS);
-        if (fireworks == null || fireworks.explosions().isEmpty()) {
-            return null;
-        }
-        FireworkExplosionComponent explosion = fireworks.explosions().get(0);
-        IntList colors = explosion.colors();
-        if (colors.isEmpty()) {
-            return null;
-        }
-        return colors.getInt(0);
     }
 }

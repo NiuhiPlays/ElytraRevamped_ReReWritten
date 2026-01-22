@@ -8,7 +8,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 
 public final class RocketFlair {
-    private static final Identifier SOUND_ID = Identifier.of("minecraft", "entity.firework_rocket.launch");
+    private static final Identifier SOUND_ID = Identifier.of("minecraft", "entity.breeze.wind_burst");
 
     private RocketFlair() {
     }

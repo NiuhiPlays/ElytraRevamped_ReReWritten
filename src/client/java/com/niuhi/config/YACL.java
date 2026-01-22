@@ -28,7 +28,6 @@ public class YACL {
         }
 
         builder.category(createVisualCategory(config));
-        builder.category(createSoundCategory(config));
 
         return builder.build().generateScreen(parent);
     }
@@ -426,15 +425,8 @@ public class YACL {
                                     .controller(TickBoxControllerBuilder::create)
                                     .build())
                             .build())
-                    .build();
-        }
-
-        private static ConfigCategory createSoundCategory(ModConfig config) {
-            return ConfigCategory.createBuilder()
-                    .name(Text.translatable("config.errrw.category.sound"))
-                    .tooltip(Text.translatable("config.errrw.category.sound.tooltip"))
                     .group(OptionGroup.createBuilder()
-                            .name(Text.translatable("config.errrw.group.sound.general"))
+                            .name(Text.translatable("config.errrw.group.visual.sounds"))
                             .option(Option.<Boolean>createBuilder()
                                     .name(Text.translatable("config.errrw.sound.boost"))
                                     .description(OptionDescription.of(Text.translatable("config.errrw.sound.boost.tooltip")))
