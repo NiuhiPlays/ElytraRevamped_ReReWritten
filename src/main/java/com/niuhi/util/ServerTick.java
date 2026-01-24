@@ -6,7 +6,7 @@ import com.niuhi.features.campfires.CampfirePull;
 import com.niuhi.features.drag.AirDrag;
 import com.niuhi.features.drag.ControllableDrag;
 import com.niuhi.features.elytra.ElytraDetection;
-import com.niuhi.features.elytra.RiptideCooldown;
+import com.niuhi.features.extra.RiptideCooldown;
 import com.niuhi.features.fireworkrockets.RocketFlair;
 import com.niuhi.features.fireworkrockets.RocketGrace;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;

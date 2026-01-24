@@ -26,7 +26,7 @@ public final class DragParticles {
 
     private static void spawnParticles(ClientWorld world, Vec3d pos) {
         for (int i = 0; i < 6; i++) {
-            world.addParticle(ParticleTypes.CLOUD,
+            world.addParticleClient(ParticleTypes.CLOUD,
                     pos.x, pos.y + 0.1, pos.z,
                     world.random.nextGaussian() * 0.01,
                     0.01,

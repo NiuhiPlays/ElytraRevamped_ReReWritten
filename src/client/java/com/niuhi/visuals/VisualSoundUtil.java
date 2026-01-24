@@ -23,6 +23,6 @@ public final class VisualSoundUtil {
         if (sound == null) {
             return;
         }
-        world.playSound(pos.x, pos.y, pos.z, sound, SoundCategory.PLAYERS, 0.8f, 1.0f, false);
+        world.playSoundClient(pos.x, pos.y, pos.z, sound, SoundCategory.PLAYERS, 0.8f, 1.0f, false);
     }
 }

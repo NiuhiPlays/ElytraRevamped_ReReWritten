@@ -22,7 +22,7 @@ public final class RocketFlair {
         for (int i = 0; i < 8; i++) {
             int color = palette[i % palette.length];
             ColoredCampfireSmokeParticleFactory.setNextColor(color);
-            world.addParticle(ModParticles.COLORED_CAMPFIRE_SMOKE,
+            world.addParticleClient(ModParticles.COLORED_CAMPFIRE_SMOKE,
                     pos.x, pos.y + 0.1, pos.z,
                     world.random.nextGaussian() * 0.02,
                     0.02,

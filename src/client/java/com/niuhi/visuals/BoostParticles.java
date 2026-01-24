@@ -27,7 +27,7 @@ public final class BoostParticles {
             double offsetX = (world.random.nextDouble() - 0.5) * 1.2;
             double offsetY = world.random.nextDouble() * 0.6;
             double offsetZ = (world.random.nextDouble() - 0.5) * 1.2;
-            world.addParticle(ParticleTypes.FLAME,
+            world.addParticleClient(ParticleTypes.FLAME,
                     pos.x + offsetX, pos.y + 0.2 + offsetY, pos.z + offsetZ,
                     world.random.nextGaussian() * 0.02,
                     0.08,

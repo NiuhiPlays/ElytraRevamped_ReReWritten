@@ -4,6 +4,7 @@ import com.niuhi.ElytraRevampedReReWritten;
 import com.niuhi.compat.Accessories;
 import com.niuhi.config.ModConfig;
 import com.mojang.authlib.GameProfile;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -24,8 +25,11 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     @Unique
     private int errrwGroundTicks = 0;
 
+    @Unique
     private static final int ERRRW_WINDOW_TICKS = 5;
+    @Unique
     private static final double ERRRW_MIN_HOP_Y = 0.35;
+    @Unique
     private static final double ERRRW_MAX_HOP_Y = 0.9;
 
     private ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile profile) {
@@ -65,10 +69,9 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 
     @Unique
     private static boolean hasElytraEquipped(ServerPlayerEntity player) {
-        for (ItemStack stack : player.getEquippedItems()) {
-            if (stack.isOf(Items.ELYTRA)) {
-                return true;
-            }
+        ItemStack chest = player.getEquippedStack(EquipmentSlot.CHEST);
+        if (chest != null && chest.isOf(Items.ELYTRA)) {
+            return true;
         }
         return ElytraRevampedReReWritten.ACCESSSORIES_LOADED && Accessories.hasElytraEquipped(player);
     }

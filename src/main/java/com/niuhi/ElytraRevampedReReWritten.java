@@ -2,7 +2,7 @@ package com.niuhi;
 
 import com.niuhi.config.ModConfig;
 import com.niuhi.config.ServerCommands;
-import com.niuhi.features.elytra.RiptideCooldown;
+import com.niuhi.features.extra.RiptideCooldown;
 import com.niuhi.features.fireworkrockets.DisableRockets;
 import com.niuhi.features.fireworkrockets.FlightBoost;
 import com.niuhi.network.ModNetworking;
