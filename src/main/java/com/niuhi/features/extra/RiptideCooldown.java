@@ -49,7 +49,7 @@ public final class RiptideCooldown {
 
     public static void register() {
         UseItemCallback.EVENT.register((player, world, hand) -> {
-            if (world.isClient) {
+            if (world.isClient()) {
                 return ActionResult.PASS;
             }
             if (!(player instanceof ServerPlayerEntity serverPlayer)) {
@@ -68,7 +68,7 @@ public final class RiptideCooldown {
             if (serverPlayer.getItemCooldownManager().isCoolingDown(stack)) {
                 return ActionResult.FAIL;
             }
-            var enchantmentRegistry = serverPlayer.getWorld()
+            var enchantmentRegistry = serverPlayer.getEntityWorld()
                     .getRegistryManager()
                     .getOrThrow(RegistryKeys.ENCHANTMENT);
             Enchantment riptide = enchantmentRegistry.get(Enchantments.RIPTIDE);

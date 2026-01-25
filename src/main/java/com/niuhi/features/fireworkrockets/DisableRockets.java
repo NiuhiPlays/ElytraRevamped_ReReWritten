@@ -15,7 +15,7 @@ public final class DisableRockets {
 
     public static void register() {
         UseItemCallback.EVENT.register((player, world, hand) -> {
-            if (world.isClient) {
+            if (world.isClient()) {
                 return ActionResult.PASS;
             }
 

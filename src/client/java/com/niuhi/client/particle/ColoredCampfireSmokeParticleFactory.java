@@ -6,6 +6,7 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.SimpleParticleType;
+import net.minecraft.util.math.random.Random;
 
 public class ColoredCampfireSmokeParticleFactory implements ParticleFactory<SimpleParticleType> {
     private static int nextColor = 0xFFFFFF;
@@ -22,7 +23,8 @@ public class ColoredCampfireSmokeParticleFactory implements ParticleFactory<Simp
     @Override
     public Particle createParticle(SimpleParticleType parameters, ClientWorld world,
                                    double x, double y, double z,
-                                   double velocityX, double velocityY, double velocityZ) {
+                                   double velocityX, double velocityY, double velocityZ,
+                                   Random random) {
         if (parameters != ModParticles.COLORED_CAMPFIRE_SMOKE) {
             return null;
         }
@@ -30,6 +32,6 @@ public class ColoredCampfireSmokeParticleFactory implements ParticleFactory<Simp
         float red = ((rgb >> 16) & 0xFF) / 255.0f;
         float green = ((rgb >> 8) & 0xFF) / 255.0f;
         float blue = (rgb & 0xFF) / 255.0f;
-        return new ColoredCampfireSmokeParticle(world, x, y, z, velocityX, velocityY, velocityZ, red, green, blue, spriteProvider);
+        return new ColoredCampfireSmokeParticle(world, x, y, z, velocityX, velocityY, velocityZ, red, green, blue, spriteProvider, random);
     }
 }

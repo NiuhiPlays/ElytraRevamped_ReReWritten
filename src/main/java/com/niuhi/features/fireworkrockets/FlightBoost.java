@@ -18,7 +18,7 @@ public final class FlightBoost {
 
     public static void register() {
         UseItemCallback.EVENT.register((player, world, hand) -> {
-            if (world.isClient) {
+            if (world.isClient()) {
                 return ActionResult.PASS;
             }
             if (!(player instanceof ServerPlayerEntity serverPlayer)) {
@@ -44,18 +44,18 @@ public final class FlightBoost {
         });
     }
 
-    public static boolean applyMidflightBoost(ServerPlayerEntity player, ItemStack stack, ModConfig config) {
+    public static void applyMidflightBoost(ServerPlayerEntity player, ItemStack stack, ModConfig config) {
         if (!config.rocketConfig.midflightBoost) {
-            return false;
+            return;
         }
         FireworksComponent fireworks = stack.get(DataComponentTypes.FIREWORKS);
         if (fireworks == null || fireworks.explosions().isEmpty()) {
-            return false;
+            return;
         }
 
         double boost = Math.max(0.0, config.rocketConfig.midflightBoostAmount);
         if (boost <= 0.0) {
-            return false;
+            return;
         }
 
         Vec3d direction = player.getRotationVector().normalize();
@@ -65,6 +65,5 @@ public final class FlightBoost {
         DebugLogger logger = new DebugLogger(ElytraRevampedReReWritten.MOD_ID, config);
         logger.log("ROCKET", "Applied midflight boost=" + String.format("%.2f", boost)
                 + " player=" + player.getName().getString());
-        return true;
     }
 }

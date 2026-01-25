@@ -53,7 +53,7 @@ public final class CampfirePull {
     }
 
     private static PullResult findPullStrength(ServerPlayerEntity player, ModConfig config) {
-        World world = player.getWorld();
+        World world = player.getEntityWorld();
         BlockPos playerPos = player.getBlockPos();
 
         int maxRange = config.pullConfig.detectionHeight;

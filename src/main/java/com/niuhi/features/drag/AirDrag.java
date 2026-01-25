@@ -24,8 +24,8 @@ public final class AirDrag {
         }
 
         double dragAmount = MathHelper.clamp(config.dragConfig.airDragAmount, 0.0, 1.0);
-        double minY = player.getWorld().getBottomY();
-        double maxY = minY + player.getWorld().getDimension().height();
+        double minY = player.getEntityWorld().getBottomY();
+        double maxY = minY + player.getEntityWorld().getDimension().height();
         double heightFactor = (player.getY() - minY) / Math.max(1.0, (maxY - minY));
         heightFactor = MathHelper.clamp(heightFactor, 0.0, 1.0);
 

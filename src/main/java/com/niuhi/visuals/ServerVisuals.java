@@ -36,8 +36,8 @@ public final class ServerVisuals {
     }
 
     private static void broadcast(ServerPlayerEntity source, VisualEventType type, ParticleEffect fallbackParticle, Identifier soundId) {
-        ServerWorld world = source.getWorld();
-        Vec3d pos = source.getPos();
+        ServerWorld world = source.getEntityWorld();
+        Vec3d pos = source.getEntityPos();
         ModConfig config = ModConfig.getInstance();
 
         boolean particlesEnabled = switch (type) {
@@ -54,7 +54,7 @@ public final class ServerVisuals {
         };
 
         for (ServerPlayerEntity target : world.getServer().getPlayerManager().getPlayerList()) {
-            if (target.getWorld() != world) {
+            if (target.getEntityWorld() != world) {
                 continue;
             }
             if (target.squaredDistanceTo(pos) > RANGE_SQUARED) {

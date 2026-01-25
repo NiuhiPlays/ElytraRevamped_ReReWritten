@@ -67,15 +67,15 @@ public final class RocketFlair {
     }
 
     private static void emitFlair(MinecraftServer server, ServerPlayerEntity source, int[] colors) {
-        ServerWorld world = source.getWorld();
-        Vec3d pos = source.getPos();
+        ServerWorld world = source.getEntityWorld();
+        Vec3d pos = source.getEntityPos();
         ModConfig config = ModConfig.getInstance();
         if (!config.rocketConfig.rocketFlair) {
             return;
         }
 
         for (ServerPlayerEntity target : server.getPlayerManager().getPlayerList()) {
-            if (target.getWorld() != world) {
+            if (target.getEntityWorld() != world) {
                 continue;
             }
             if (target.squaredDistanceTo(pos) > 64 * 64) {
@@ -96,12 +96,12 @@ public final class RocketFlair {
         if (!config.soundConfig.rocketSound) {
             return;
         }
-        ServerWorld world = player.getWorld();
+        ServerWorld world = player.getEntityWorld();
         SoundEvent sound = Registries.SOUND_EVENT.get(SOUND_ID);
         if (sound == null) {
             return;
         }
-        Vec3d pos = player.getPos();
+        Vec3d pos = player.getEntityPos();
         world.playSound(null, pos.x, pos.y, pos.z, sound, SoundCategory.PLAYERS, 0.9f, 1.0f);
     }
 

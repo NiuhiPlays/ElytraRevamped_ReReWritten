@@ -53,7 +53,7 @@ public final class CampfireBoost {
     }
 
     private static BoostResult findBoostStrength(ServerPlayerEntity player, ModConfig config) {
-        World world = player.getWorld();
+        World world = player.getEntityWorld();
         BlockPos playerPos = player.getBlockPos();
 
         int maxRange = config.boostConfig.detectionHeight;
