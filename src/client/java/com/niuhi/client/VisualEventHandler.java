@@ -1,7 +1,6 @@
 package com.niuhi.client;
 
 import com.niuhi.network.VisualEventType;
-import com.niuhi.visuals.AirDragParticles;
 import com.niuhi.visuals.BoostParticles;
 import com.niuhi.visuals.DragParticles;
 import com.niuhi.visuals.PullParticles;
@@ -25,7 +24,6 @@ public final class VisualEventHandler {
             case PULL -> PullParticles.play(world, position);
             case DRAG -> DragParticles.play(world, position);
             case ROCKET_FLAIR -> RocketFlair.play(world, position, colors);
-            case AIR_DRAG -> AirDragParticles.play(world, position);
         }
     }
 }

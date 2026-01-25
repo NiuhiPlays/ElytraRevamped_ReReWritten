@@ -67,7 +67,7 @@ public final class RocketFlair {
     }
 
     private static void emitFlair(MinecraftServer server, ServerPlayerEntity source, int[] colors) {
-        ServerWorld world = source.getServerWorld();
+        ServerWorld world = source.getWorld();
         Vec3d pos = source.getPos();
         ModConfig config = ModConfig.getInstance();
         if (!config.rocketConfig.rocketFlair) {
@@ -96,7 +96,7 @@ public final class RocketFlair {
         if (!config.soundConfig.rocketSound) {
             return;
         }
-        ServerWorld world = player.getServerWorld();
+        ServerWorld world = player.getWorld();
         SoundEvent sound = Registries.SOUND_EVENT.get(SOUND_ID);
         if (sound == null) {
             return;
@@ -119,7 +119,7 @@ public final class RocketFlair {
         if (fireworks == null || fireworks.explosions().isEmpty()) {
             return new int[0];
         }
-        FireworkExplosionComponent explosion = fireworks.explosions().get(0);
+        FireworkExplosionComponent explosion = fireworks.explosions().getFirst();
         IntList colors = explosion.colors();
         if (colors.isEmpty()) {
             return new int[0];

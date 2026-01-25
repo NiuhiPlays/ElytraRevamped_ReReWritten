@@ -14,7 +14,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 
 public final class ServerVisuals {
-    private static final int MAX_PARTICLES = 10;
     private static final double RANGE_SQUARED = 64.0 * 64.0;
 
     private static final Identifier BOOST_SOUND_ID = Identifier.of("minecraft", "entity.breeze.idle_ground");
@@ -36,12 +35,8 @@ public final class ServerVisuals {
         broadcast(source, VisualEventType.DRAG, ParticleTypes.CLOUD, DRAG_SOUND_ID);
     }
 
-    public static void broadcastAirDrag(ServerPlayerEntity source) {
-        broadcast(source, VisualEventType.AIR_DRAG, ParticleTypes.CLOUD, DRAG_SOUND_ID);
-    }
-
     private static void broadcast(ServerPlayerEntity source, VisualEventType type, ParticleEffect fallbackParticle, Identifier soundId) {
-        ServerWorld world = source.getServerWorld();
+        ServerWorld world = source.getWorld();
         Vec3d pos = source.getPos();
         ModConfig config = ModConfig.getInstance();
 
@@ -49,18 +44,14 @@ public final class ServerVisuals {
             case BOOST -> config.visualConfig.BoostParticles;
             case PULL -> config.visualConfig.PullParticles;
             case DRAG -> config.visualConfig.DragParticles;
-            case AIR_DRAG -> config.visualConfig.AirDragParticles;
             default -> false;
         };
         boolean soundsEnabled = switch (type) {
             case BOOST -> config.soundConfig.boostSound;
             case PULL -> config.soundConfig.pullSound;
             case DRAG -> config.soundConfig.dragSound;
-            case AIR_DRAG -> config.soundConfig.dragSound;
             default -> false;
         };
-
-        int particleCount = type == VisualEventType.AIR_DRAG ? 2 : MAX_PARTICLES;
 
         for (ServerPlayerEntity target : world.getServer().getPlayerManager().getPlayerList()) {
             if (target.getWorld() != world) {
@@ -75,12 +66,6 @@ public final class ServerVisuals {
                     ModNetworking.sendVisualEvent(target, type, pos);
                 }
                 continue;
-            }
-
-            if (particlesEnabled) {
-                world.spawnParticles(target, fallbackParticle, false, false,
-                        pos.x, pos.y + 0.2, pos.z,
-                        particleCount, 0.25, 0.15, 0.25, 0.02);
             }
 
             if (soundsEnabled) {

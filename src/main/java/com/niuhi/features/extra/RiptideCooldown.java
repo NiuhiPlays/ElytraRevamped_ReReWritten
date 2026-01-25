@@ -68,7 +68,7 @@ public final class RiptideCooldown {
             if (serverPlayer.getItemCooldownManager().isCoolingDown(stack)) {
                 return ActionResult.FAIL;
             }
-            var enchantmentRegistry = serverPlayer.getServerWorld()
+            var enchantmentRegistry = serverPlayer.getWorld()
                     .getRegistryManager()
                     .getOrThrow(RegistryKeys.ENCHANTMENT);
             Enchantment riptide = enchantmentRegistry.get(Enchantments.RIPTIDE);
