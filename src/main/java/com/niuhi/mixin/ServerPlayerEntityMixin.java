@@ -58,7 +58,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
                 double currentY = self.getVelocity().y;
                 double targetY = Math.min(Math.max(currentY, ERRRW_MIN_HOP_Y), ERRRW_MAX_HOP_Y);
                 self.setVelocity(self.getVelocity().x, targetY, self.getVelocity().z);
-                self.velocityModified = true;
+                self.knockedBack = true;
                 self.startGliding();
             }
         }

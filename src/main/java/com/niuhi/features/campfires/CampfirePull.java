@@ -38,7 +38,7 @@ public final class CampfirePull {
 
         Vec3d velocity = player.getVelocity();
         player.setVelocity(velocity.x, velocity.y - result.strength, velocity.z);
-        player.velocityModified = true;
+        player.knockedBack = true;
 
         LAST_PULL_TICK.put(player.getUuid(), serverTick);
         ServerVisuals.broadcastPull(player);

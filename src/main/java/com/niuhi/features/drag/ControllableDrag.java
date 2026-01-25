@@ -28,7 +28,7 @@ public final class ControllableDrag {
         double dragAmount = Math.max(0.0, Math.min(1.0, config.dragConfig.dragAmount));
         Vec3d velocity = player.getVelocity();
         player.setVelocity(velocity.x * dragAmount, velocity.y * dragAmount, velocity.z * dragAmount);
-        player.velocityModified = true;
+        player.knockedBack = true;
 
         Integer lastTick = LAST_DRAG_TICK.get(player.getUuid());
         if (lastTick == null || serverTick - lastTick >= 5) {

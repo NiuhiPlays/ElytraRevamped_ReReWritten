@@ -33,7 +33,7 @@ public final class AirDrag {
         double appliedDrag = 1.0 - scaledFactor * (1.0 - dragAmount);
         Vec3d velocity = player.getVelocity();
         player.setVelocity(velocity.x * appliedDrag, velocity.y * appliedDrag, velocity.z * appliedDrag);
-        player.velocityModified = true;
+        player.knockedBack = true;
 
         Integer lastTick = LAST_DRAG_TICK.get(player.getUuid());
         if (lastTick == null || serverTick - lastTick >= EMIT_INTERVAL_TICKS) {

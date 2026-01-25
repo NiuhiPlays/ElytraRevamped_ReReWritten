@@ -43,7 +43,7 @@ public final class ElytraBounce {
         Vec3d velocity = player.getVelocity();
         double targetY = MathHelper.clamp(Math.max(velocity.y, 0.0) + HOP_BOOST, 0.0, MAX_HOP_Y);
         player.setVelocity(velocity.x, targetY, velocity.z);
-        player.velocityModified = true;
+        player.knockedBack = true;
 
         LAST_HOP_TICK.put(uuid, serverTick);
 

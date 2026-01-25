@@ -53,6 +53,8 @@ public final class ServerVisuals {
             default -> false;
         };
 
+        assert world.getServer() != null;
+        boolean playedFallbackSound = false;
         for (ServerPlayerEntity target : world.getServer().getPlayerManager().getPlayerList()) {
             if (target.getEntityWorld() != world) {
                 continue;
@@ -68,12 +70,68 @@ public final class ServerVisuals {
                 continue;
             }
 
+            if (particlesEnabled) {
+                spawnFallbackParticles(world, target, pos, fallbackParticle, type);
+            }
+
             if (soundsEnabled) {
                 SoundEvent sound = Registries.SOUND_EVENT.get(soundId);
                 if (sound != null) {
-                    target.playSoundToPlayer(sound, SoundCategory.PLAYERS, 0.8f, 1.0f);
+                    if (!playedFallbackSound) {
+                        world.playSound(null, pos.x, pos.y, pos.z, sound, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                        playedFallbackSound = true;
+                    }
                 }
             }
         }
+    }
+
+    private static void spawnFallbackParticles(ServerWorld world, ServerPlayerEntity target, Vec3d pos,
+                                               ParticleEffect particle, VisualEventType type) {
+        int count;
+        double offsetX;
+        double offsetY;
+        double offsetZ;
+        double speed;
+        double yPos;
+
+        switch (type) {
+            case BOOST -> {
+                count = 8;
+                offsetX = 0.6;
+                offsetY = 0.3;
+                offsetZ = 0.6;
+                speed = 0.04;
+                yPos = pos.y + 0.2;
+            }
+            case PULL -> {
+                count = 8;
+                offsetX = 0.6;
+                offsetY = 0.3;
+                offsetZ = 0.6;
+                speed = 0.02;
+                yPos = pos.y + 0.2;
+            }
+            case DRAG -> {
+                count = 6;
+                offsetX = 0.15;
+                offsetY = 0.05;
+                offsetZ = 0.15;
+                speed = 0.01;
+                yPos = pos.y + 0.1;
+            }
+            default -> {
+                count = 6;
+                offsetX = 0.2;
+                offsetY = 0.2;
+                offsetZ = 0.2;
+                speed = 0.01;
+                yPos = pos.y;
+            }
+        }
+
+        world.spawnParticles(target, particle, false, false,
+                pos.x, yPos, pos.z,
+                count, offsetX, offsetY, offsetZ, speed);
     }
 }

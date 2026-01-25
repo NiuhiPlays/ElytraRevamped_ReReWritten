@@ -60,7 +60,7 @@ public final class FlightBoost {
 
         Vec3d direction = player.getRotationVector().normalize();
         player.addVelocity(direction.x * boost, direction.y * boost, direction.z * boost);
-        player.velocityModified = true;
+        player.knockedBack = true;
 
         DebugLogger logger = new DebugLogger(ElytraRevampedReReWritten.MOD_ID, config);
         logger.log("ROCKET", "Applied midflight boost=" + String.format("%.2f", boost)
