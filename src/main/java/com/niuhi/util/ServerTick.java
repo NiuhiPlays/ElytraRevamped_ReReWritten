@@ -42,6 +42,7 @@ public final class ServerTick {
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             RiptideCooldown.clearOnLanding(player, config);
             RiptideCooldown.applyPending(player, config, serverTicks);
+            
             if (!ELYTRA_DETECTION.isFlying(player)) {
                 continue;
             }
