@@ -3,7 +3,7 @@
 	"package": "com.niuhi.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin",
+		"EntityFlagAccessor",
 		"LivingEntityBounceMixin"
 	],
 	"injectors": {
