@@ -2,6 +2,7 @@ package com.niuhi.features.elytra;
 
 import com.niuhi.compat.Accessories;
 import net.fabricmc.loader.api.FabricLoader;
+import com.niuhi.mixin.EntityFlagAccessor;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Items;
@@ -96,13 +97,7 @@ public final class ElytraBounce {
         
         // Re-enable gliding flag if still within window
         if (groundTicks <= MAX_GROUND_TICKS && !player.isGliding()) {
-            try {
-                java.lang.reflect.Method setFlag = net.minecraft.entity.Entity.class.getDeclaredMethod("setFlag", int.class, boolean.class);
-                setFlag.setAccessible(true);
-                setFlag.invoke(player, 7, true);
-            } catch (Exception e) {
-                // Fallback: this shouldn't happen
-            }
+            ((EntityFlagAccessor) player).errrw$setFlag(7, true);
         } else if (groundTicks > MAX_GROUND_TICKS) {
             TICKS_ON_GROUND.put(uuid, 0);
         }
