@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityBounceMixin {
 
-    @Inject(method = "travel", at = @At("TAIL"), cancellable = false)
+    @Inject(method = "travel", at = @At("TAIL"))
     private void errrw$postTravel(Vec3d movementInput, CallbackInfo ci) {
         ModConfig config = ModConfig.getInstance();
         if (!config.elytraConfig.enableBounce) {
