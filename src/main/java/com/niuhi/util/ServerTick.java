@@ -11,7 +11,7 @@ import com.niuhi.features.fireworkrockets.RocketFlair;
 import com.niuhi.features.fireworkrockets.RocketGrace;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.level.ServerPlayer;
 
 public final class ServerTick {
     private static final ElytraDetection ELYTRA_DETECTION = new ElytraDetection();
@@ -39,7 +39,7 @@ public final class ServerTick {
             return;
         }
 
-        for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+        for (ServerPlayer player : server.getPlayerList().getPlayers()) {
             RiptideCooldown.clearOnLanding(player, config);
             RiptideCooldown.applyPending(player, config, serverTicks);
             

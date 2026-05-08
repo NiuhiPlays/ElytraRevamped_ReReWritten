@@ -4,13 +4,13 @@ import com.niuhi.ElytraRevampedReReWritten;
 import com.niuhi.config.DebugLogger;
 import com.niuhi.config.ModConfig;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.FireworksComponent;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.Fireworks;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.phys.Vec3;
 
 public final class FlightBoost {
     private FlightBoost() {
@@ -18,37 +18,37 @@ public final class FlightBoost {
 
     public static void register() {
         UseItemCallback.EVENT.register((player, world, hand) -> {
-            if (world.isClient()) {
-                return ActionResult.PASS;
+            if (world.isClientSide()) {
+                return InteractionResult.PASS;
             }
-            if (!(player instanceof ServerPlayerEntity serverPlayer)) {
-                return ActionResult.PASS;
+            if (!(player instanceof ServerPlayer serverPlayer)) {
+                return InteractionResult.PASS;
             }
-            if (!serverPlayer.isGliding()) {
-                return ActionResult.PASS;
+            if (!serverPlayer.isFallFlying()) {
+                return InteractionResult.PASS;
             }
 
             ModConfig config = ModConfig.getInstance();
             if (!config.rocketConfig.midflightBoost || config.rocketConfig.DisableRockets) {
-                return ActionResult.PASS;
+                return InteractionResult.PASS;
             }
 
-            var stack = serverPlayer.getStackInHand(hand);
-            if (!stack.isOf(Items.FIREWORK_ROCKET)) {
-                return ActionResult.PASS;
+            var stack = serverPlayer.getItemInHand(hand);
+            if (!stack.is(Items.FIREWORK_ROCKET)) {
+                return InteractionResult.PASS;
             }
 
             applyMidflightBoost(serverPlayer, stack, config);
 
-            return ActionResult.PASS;
+            return InteractionResult.PASS;
         });
     }
 
-    public static void applyMidflightBoost(ServerPlayerEntity player, ItemStack stack, ModConfig config) {
+    public static void applyMidflightBoost(ServerPlayer player, ItemStack stack, ModConfig config) {
         if (!config.rocketConfig.midflightBoost) {
             return;
         }
-        FireworksComponent fireworks = stack.get(DataComponentTypes.FIREWORKS);
+        Fireworks fireworks = stack.get(DataComponents.FIREWORKS);
         if (fireworks == null || fireworks.explosions().isEmpty()) {
             return;
         }
@@ -58,9 +58,9 @@ public final class FlightBoost {
             return;
         }
 
-        Vec3d direction = player.getRotationVector().normalize();
-        player.addVelocity(direction.x * boost, direction.y * boost, direction.z * boost);
-        player.knockedBack = true;
+        Vec3 direction = player.getLookAngle().normalize();
+        player.push(direction.x * boost, direction.y * boost, direction.z * boost);
+        player.hurtMarked = true;
 
         DebugLogger logger = new DebugLogger(ElytraRevampedReReWritten.MOD_ID, config);
         logger.log("ROCKET", "Applied midflight boost=" + String.format("%.2f", boost)

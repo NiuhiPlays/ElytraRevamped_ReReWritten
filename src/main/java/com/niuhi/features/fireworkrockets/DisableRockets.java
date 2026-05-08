@@ -5,9 +5,9 @@ import com.niuhi.config.DebugLogger;
 import com.niuhi.config.ModConfig;
 import com.niuhi.util.ServerTick;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
-import net.minecraft.item.Items;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.ActionResult;
+import net.minecraft.world.item.Items;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionResult;
 
 public final class DisableRockets {
     private DisableRockets() {
@@ -15,24 +15,24 @@ public final class DisableRockets {
 
     public static void register() {
         UseItemCallback.EVENT.register((player, world, hand) -> {
-            if (world.isClient()) {
-                return ActionResult.PASS;
+            if (world.isClientSide()) {
+                return InteractionResult.PASS;
             }
 
             ModConfig config = ModConfig.getInstance();
-            if (!player.getStackInHand(hand).isOf(Items.FIREWORK_ROCKET)) {
-                return ActionResult.PASS;
+            if (!player.getItemInHand(hand).is(Items.FIREWORK_ROCKET)) {
+                return InteractionResult.PASS;
             }
 
-            if (!(player instanceof ServerPlayerEntity serverPlayer) || !serverPlayer.isGliding()) {
-                return ActionResult.PASS;
+            if (!(player instanceof ServerPlayer serverPlayer) || !serverPlayer.isFallFlying()) {
+                return InteractionResult.PASS;
             }
 
             int serverTick = ServerTick.getServerTicks();
             RocketGrace.ensureGlideStart(serverPlayer, serverTick);
 
             if (!config.rocketConfig.DisableRockets) {
-                return ActionResult.PASS;
+                return InteractionResult.PASS;
             }
 
             if (config.rocketConfig.initialBoost
@@ -41,17 +41,17 @@ public final class DisableRockets {
                 DebugLogger logger = new DebugLogger(ElytraRevampedReReWritten.MOD_ID, config);
                 logger.log("ROCKET", "Allowed grace rocket for " + serverPlayer.getName().getString()
                         + " tick=" + serverTick);
-                return ActionResult.PASS;
+                return InteractionResult.PASS;
             }
 
             DebugLogger logger = new DebugLogger(ElytraRevampedReReWritten.MOD_ID, config);
             logger.log("ROCKET", "Blocked rocket for " + serverPlayer.getName().getString()
                     + " tick=" + serverTick);
-            FlightBoost.applyMidflightBoost(serverPlayer, player.getStackInHand(hand), config);
+            FlightBoost.applyMidflightBoost(serverPlayer, player.getItemInHand(hand), config);
             if (config.rocketConfig.rocketFlair) {
-                RocketFlair.trigger(serverPlayer, player.getStackInHand(hand));
+                RocketFlair.trigger(serverPlayer, player.getItemInHand(hand));
             }
-            return ActionResult.FAIL;
+            return InteractionResult.FAIL;
         });
     }
 }

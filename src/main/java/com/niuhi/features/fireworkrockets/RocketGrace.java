@@ -1,7 +1,7 @@
 package com.niuhi.features.fireworkrockets;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.level.ServerPlayer;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,9 +18,9 @@ public final class RocketGrace {
     }
 
     public static void onServerTick(int serverTick, MinecraftServer server) {
-        for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-            UUID uuid = player.getUuid();
-            boolean isGliding = player.isGliding();
+        for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+            UUID uuid = player.getUUID();
+            boolean isGliding = player.isFallFlying();
             boolean wasGliding = LAST_GLIDE_STATE.getOrDefault(uuid, false);
 
             if (isGliding && !wasGliding) {
@@ -35,8 +35,8 @@ public final class RocketGrace {
         }
     }
 
-    public static void ensureGlideStart(ServerPlayerEntity player, int serverTick) {
-        UUID uuid = player.getUuid();
+    public static void ensureGlideStart(ServerPlayer player, int serverTick) {
+        UUID uuid = player.getUUID();
         if (!GLIDE_START_TICK.containsKey(uuid)) {
             GLIDE_START_TICK.put(uuid, serverTick);
             USED_GRACE_ROCKET.remove(uuid);
@@ -44,15 +44,15 @@ public final class RocketGrace {
         }
     }
 
-    public static boolean canUseRocket(ServerPlayerEntity player, int serverTick, int gracePeriodTicks) {
-        Integer startTick = GLIDE_START_TICK.get(player.getUuid());
+    public static boolean canUseRocket(ServerPlayer player, int serverTick, int gracePeriodTicks) {
+        Integer startTick = GLIDE_START_TICK.get(player.getUUID());
         if (startTick == null) {
             return false;
         }
-        return serverTick - startTick <= gracePeriodTicks && !USED_GRACE_ROCKET.contains(player.getUuid());
+        return serverTick - startTick <= gracePeriodTicks && !USED_GRACE_ROCKET.contains(player.getUUID());
     }
 
-    public static void markRocketUsed(ServerPlayerEntity player) {
-        USED_GRACE_ROCKET.add(player.getUuid());
+    public static void markRocketUsed(ServerPlayer player) {
+        USED_GRACE_ROCKET.add(player.getUUID());
     }
 }

@@ -5,16 +5,16 @@ import com.niuhi.visuals.BoostParticles;
 import com.niuhi.visuals.DragParticles;
 import com.niuhi.visuals.PullParticles;
 import com.niuhi.visuals.RocketFlair;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.world.phys.Vec3;
 
 public final class VisualEventHandler {
     private VisualEventHandler() {
     }
 
-    public static void handleEvent(VisualEventType type, Vec3d position, int[] colors) {
-        ClientWorld world = MinecraftClient.getInstance().world;
+    public static void handleEvent(VisualEventType type, Vec3 position, int[] colors) {
+        ClientLevel world = Minecraft.getInstance().level;
         if (world == null) {
             return;
         }

@@ -3,11 +3,11 @@ package com.niuhi.features.elytra;
 import com.niuhi.compat.Accessories;
 import net.fabricmc.loader.api.FabricLoader;
 import com.niuhi.mixin.EntityFlagAccessor;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Items;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.PlayerInput;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Items;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Input;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,26 +22,26 @@ public final class ElytraBounce {
     }
 
     public static boolean shouldKeepGliding(LivingEntity entity, boolean originalValue) {
-        if (!(entity instanceof ServerPlayerEntity player)) {
+        if (!(entity instanceof ServerPlayer player)) {
             return originalValue;
         }
         
-        UUID uuid = player.getUuid();
+        UUID uuid = player.getUUID();
         
         // Check conditions: on ground, was flying, holding jump, wearing elytra
-        if (!entity.isOnGround()) {
+        if (!entity.onGround()) {
             TICKS_ON_GROUND.put(uuid, 0);
             return originalValue;
         }
         
         // Check if currently gliding (before this call tries to disable it)
-        if (!player.isGliding()) {
+        if (!player.isFallFlying()) {
             TICKS_ON_GROUND.put(uuid, 0);
             return originalValue;
         }
         
         // Check if jump is held
-        PlayerInput input = player.getPlayerInput();
+        Input input = player.getLastClientInput();
         if (input == null || !input.jump()) {
             return originalValue;
         }
@@ -65,20 +65,20 @@ public final class ElytraBounce {
     }
 
     public static void updateBounceState(LivingEntity entity) {
-        if (!(entity instanceof ServerPlayerEntity player)) {
+        if (!(entity instanceof ServerPlayer player)) {
             return;
         }
         
-        UUID uuid = player.getUuid();
+        UUID uuid = player.getUUID();
         
         // Check conditions
-        if (!entity.isOnGround()) {
+        if (!entity.onGround()) {
             TICKS_ON_GROUND.put(uuid, 0);
             return;
         }
         
         // Check if jump is held
-        PlayerInput input = player.getPlayerInput();
+        Input input = player.getLastClientInput();
         if (input == null || !input.jump()) {
             TICKS_ON_GROUND.put(uuid, 0);
             return;
@@ -96,15 +96,15 @@ public final class ElytraBounce {
         TICKS_ON_GROUND.put(uuid, groundTicks);
         
         // Re-enable gliding flag if still within window
-        if (groundTicks <= MAX_GROUND_TICKS && !player.isGliding()) {
+        if (groundTicks <= MAX_GROUND_TICKS && !player.isFallFlying()) {
             ((EntityFlagAccessor) player).errrw$setFlag(7, true);
         } else if (groundTicks > MAX_GROUND_TICKS) {
             TICKS_ON_GROUND.put(uuid, 0);
         }
     }
 
-    private static boolean isWearingElytra(ServerPlayerEntity player) {
-        if (player.getEquippedStack(EquipmentSlot.CHEST).isOf(Items.ELYTRA)) {
+    private static boolean isWearingElytra(ServerPlayer player) {
+        if (player.getItemBySlot(EquipmentSlot.CHEST).is(Items.ELYTRA)) {
             return true;
         }
         

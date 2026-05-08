@@ -7,8 +7,8 @@ import com.niuhi.network.VisualEventPayload;
 import com.niuhi.network.VisualEventType;
 import com.niuhi.particle.ModParticles;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
 
 public class ElytraRevampedReReWrittenClient implements ClientModInitializer {
 	@Override
@@ -19,12 +19,12 @@ public class ElytraRevampedReReWrittenClient implements ClientModInitializer {
 			VisualEventType type = VisualEventType.fromId(typeId);
 			int[] colors = payload.hasColor() ? payload.colors() : null;
 			context.client().execute(() ->
-					VisualEventHandler.handleEvent(type, new net.minecraft.util.math.Vec3d(
+					VisualEventHandler.handleEvent(type, new net.minecraft.world.phys.Vec3(
 							payload.x(), payload.y(), payload.z()), colors));
 		});
 
 		ModParticles.register();
-		ParticleFactoryRegistry.getInstance().register(ModParticles.COLORED_CAMPFIRE_SMOKE,
+		ParticleProviderRegistry.getInstance().register(ModParticles.COLORED_CAMPFIRE_SMOKE,
 				ColoredCampfireSmokeParticleFactory::new);
 	}
 }

@@ -3,41 +3,41 @@ package com.niuhi.visuals;
 import com.niuhi.config.ModConfig;
 import com.niuhi.network.ModNetworking;
 import com.niuhi.network.VisualEventType;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.Registries;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.phys.Vec3;
 
 public final class ServerVisuals {
     private static final double RANGE_SQUARED = 64.0 * 64.0;
 
-    private static final Identifier BOOST_SOUND_ID = Identifier.of("minecraft", "entity.breeze.idle_ground");
-    private static final Identifier PULL_SOUND_ID = Identifier.of("minecraft", "entity.breeze.idle_air");
-    private static final Identifier DRAG_SOUND_ID = Identifier.of("minecraft", "entity.breeze.land");
+    private static final Identifier BOOST_SOUND_ID = Identifier.fromNamespaceAndPath("minecraft", "entity.breeze.idle_ground");
+    private static final Identifier PULL_SOUND_ID = Identifier.fromNamespaceAndPath("minecraft", "entity.breeze.idle_air");
+    private static final Identifier DRAG_SOUND_ID = Identifier.fromNamespaceAndPath("minecraft", "entity.breeze.land");
 
     private ServerVisuals() {
     }
 
-    public static void broadcastBoost(ServerPlayerEntity source) {
+    public static void broadcastBoost(ServerPlayer source) {
         broadcast(source, VisualEventType.BOOST, ParticleTypes.FLAME, BOOST_SOUND_ID);
     }
 
-    public static void broadcastPull(ServerPlayerEntity source) {
+    public static void broadcastPull(ServerPlayer source) {
         broadcast(source, VisualEventType.PULL, ParticleTypes.SOUL_FIRE_FLAME, PULL_SOUND_ID);
     }
 
-    public static void broadcastDrag(ServerPlayerEntity source) {
+    public static void broadcastDrag(ServerPlayer source) {
         broadcast(source, VisualEventType.DRAG, ParticleTypes.CLOUD, DRAG_SOUND_ID);
     }
 
-    private static void broadcast(ServerPlayerEntity source, VisualEventType type, ParticleEffect fallbackParticle, Identifier soundId) {
-        ServerWorld world = source.getEntityWorld();
-        Vec3d pos = source.getEntityPos();
+    private static void broadcast(ServerPlayer source, VisualEventType type, ParticleOptions fallbackParticle, Identifier soundId) {
+        ServerLevel world = source.level();
+        Vec3 pos = source.position();
         ModConfig config = ModConfig.getInstance();
 
         boolean particlesEnabled = switch (type) {
@@ -55,11 +55,11 @@ public final class ServerVisuals {
 
         assert world.getServer() != null;
         boolean playedFallbackSound = false;
-        for (ServerPlayerEntity target : world.getServer().getPlayerManager().getPlayerList()) {
-            if (target.getEntityWorld() != world) {
+        for (ServerPlayer target : world.getServer().getPlayerList().getPlayers()) {
+            if (target.level() != world) {
                 continue;
             }
-            if (target.squaredDistanceTo(pos) > RANGE_SQUARED) {
+            if (target.distanceToSqr(pos) > RANGE_SQUARED) {
                 continue;
             }
 
@@ -75,10 +75,10 @@ public final class ServerVisuals {
             }
 
             if (soundsEnabled) {
-                SoundEvent sound = Registries.SOUND_EVENT.get(soundId);
+                SoundEvent sound = BuiltInRegistries.SOUND_EVENT.getValue(soundId);
                 if (sound != null) {
                     if (!playedFallbackSound) {
-                        world.playSound(null, pos.x, pos.y, pos.z, sound, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                        world.playSound(null, pos.x, pos.y, pos.z, sound, SoundSource.PLAYERS, 1.0f, 1.0f);
                         playedFallbackSound = true;
                     }
                 }
@@ -86,8 +86,8 @@ public final class ServerVisuals {
         }
     }
 
-    private static void spawnFallbackParticles(ServerWorld world, ServerPlayerEntity target, Vec3d pos,
-                                               ParticleEffect particle, VisualEventType type) {
+    private static void spawnFallbackParticles(ServerLevel world, ServerPlayer target, Vec3 pos,
+                                               ParticleOptions particle, VisualEventType type) {
         int count;
         double offsetX;
         double offsetY;
@@ -130,7 +130,7 @@ public final class ServerVisuals {
             }
         }
 
-        world.spawnParticles(target, particle, false, false,
+        world.sendParticles(target, particle, false, false,
                 pos.x, yPos, pos.z,
                 count, offsetX, offsetY, offsetZ, speed);
     }

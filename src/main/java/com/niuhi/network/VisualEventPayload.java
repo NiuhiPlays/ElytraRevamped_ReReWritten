@@ -1,17 +1,18 @@
 package com.niuhi.network;
 
 import com.niuhi.ElytraRevampedReReWritten;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload.Type;
+import net.minecraft.resources.Identifier;
 
 public record VisualEventPayload(int typeId, double x, double y, double z, boolean hasColor, int[] colors)
-        implements CustomPayload {
-    public static final Id<VisualEventPayload> ID =
-            new Id<>(Identifier.of(ElytraRevampedReReWritten.MOD_ID, "visual_event"));
+        implements CustomPacketPayload {
+    public static final Type<VisualEventPayload> ID =
+            new Type<>(Identifier.fromNamespaceAndPath(ElytraRevampedReReWritten.MOD_ID, "visual_event"));
 
-    public static final PacketCodec<PacketByteBuf, VisualEventPayload> CODEC = PacketCodec.of(
+    public static final StreamCodec<FriendlyByteBuf, VisualEventPayload> CODEC = StreamCodec.ofMember(
             (value, buf) -> {
                 buf.writeVarInt(value.typeId());
                 buf.writeDouble(value.x());
@@ -46,7 +47,7 @@ public record VisualEventPayload(int typeId, double x, double y, double z, boole
     );
 
     @Override
-    public Id<? extends CustomPayload> getId() {
+    public Type<? extends CustomPacketPayload> type() {
         return ID;
     }
 }

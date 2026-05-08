@@ -4,8 +4,8 @@ import com.niuhi.ElytraRevampedReReWritten;
 import com.niuhi.config.DebugLogger;
 import com.niuhi.config.ModConfig;
 import com.niuhi.visuals.ServerVisuals;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,23 +17,23 @@ public final class ControllableDrag {
     private ControllableDrag() {
     }
 
-    public static void tryApply(ServerPlayerEntity player, ModConfig config, int serverTick) {
+    public static void tryApply(ServerPlayer player, ModConfig config, int serverTick) {
         if (!config.dragConfig.enableControllableDrag) {
             return;
         }
-        if (!player.isSneaking()) {
+        if (!player.isShiftKeyDown()) {
             return;
         }
 
         double dragAmount = Math.max(0.0, Math.min(1.0, config.dragConfig.dragAmount));
-        Vec3d velocity = player.getVelocity();
-        player.setVelocity(velocity.x * dragAmount, velocity.y * dragAmount, velocity.z * dragAmount);
-        player.knockedBack = true;
+        Vec3 velocity = player.getDeltaMovement();
+        player.setDeltaMovement(velocity.x * dragAmount, velocity.y * dragAmount, velocity.z * dragAmount);
+        player.hurtMarked = true;
 
-        Integer lastTick = LAST_DRAG_TICK.get(player.getUuid());
+        Integer lastTick = LAST_DRAG_TICK.get(player.getUUID());
         if (lastTick == null || serverTick - lastTick >= 5) {
             ServerVisuals.broadcastDrag(player);
-            LAST_DRAG_TICK.put(player.getUuid(), serverTick);
+            LAST_DRAG_TICK.put(player.getUUID(), serverTick);
         }
 
         DebugLogger logger = new DebugLogger(ElytraRevampedReReWritten.MOD_ID, config);

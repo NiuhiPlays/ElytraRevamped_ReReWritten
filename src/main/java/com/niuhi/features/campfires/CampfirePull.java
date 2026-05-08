@@ -4,14 +4,14 @@ import com.niuhi.ElytraRevampedReReWritten;
 import com.niuhi.config.DebugLogger;
 import com.niuhi.config.ModConfig;
 import com.niuhi.visuals.ServerVisuals;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.CampfireBlock;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CampfireBlock;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,9 +24,9 @@ public final class CampfirePull {
     private CampfirePull() {
     }
 
-    public static void tryPull(ServerPlayerEntity player, ModConfig config, int serverTick) {
+    public static void tryPull(ServerPlayer player, ModConfig config, int serverTick) {
         int cooldown = Math.max(0, config.pullConfig.pullCooldownTicks);
-        Integer lastTick = LAST_PULL_TICK.get(player.getUuid());
+        Integer lastTick = LAST_PULL_TICK.get(player.getUUID());
         if (lastTick != null && serverTick - lastTick < cooldown) {
             return;
         }
@@ -36,11 +36,11 @@ public final class CampfirePull {
             return;
         }
 
-        Vec3d velocity = player.getVelocity();
-        player.setVelocity(velocity.x, velocity.y - result.strength, velocity.z);
-        player.knockedBack = true;
+        Vec3 velocity = player.getDeltaMovement();
+        player.setDeltaMovement(velocity.x, velocity.y - result.strength, velocity.z);
+        player.hurtMarked = true;
 
-        LAST_PULL_TICK.put(player.getUuid(), serverTick);
+        LAST_PULL_TICK.put(player.getUUID(), serverTick);
         ServerVisuals.broadcastPull(player);
 
         DebugLogger logger = new DebugLogger(ElytraRevampedReReWritten.MOD_ID, config);
@@ -52,9 +52,9 @@ public final class CampfirePull {
                 + " player=" + player.getName().getString());
     }
 
-    private static PullResult findPullStrength(ServerPlayerEntity player, ModConfig config) {
-        World world = player.getEntityWorld();
-        BlockPos playerPos = player.getBlockPos();
+    private static PullResult findPullStrength(ServerPlayer player, ModConfig config) {
+        Level world = player.level();
+        BlockPos playerPos = player.blockPosition();
 
         int maxRange = config.pullConfig.detectionHeight;
         if (config.pullConfig.enableHayPull) {
@@ -64,10 +64,10 @@ public final class CampfirePull {
         PullResult best = new PullResult();
 
         for (int dy = 1; dy <= maxRange; dy++) {
-            BlockPos basePos = playerPos.down(dy);
+            BlockPos basePos = playerPos.below(dy);
             for (int dx = -1; dx <= 1; dx++) {
                 for (int dz = -1; dz <= 1; dz++) {
-                    BlockPos campfirePos = basePos.add(dx, 0, dz);
+                    BlockPos campfirePos = basePos.offset(dx, 0, dz);
                     BlockState state = world.getBlockState(campfirePos);
                     if (!isLitSoulCampfire(state)) {
                         continue;
@@ -100,7 +100,7 @@ public final class CampfirePull {
     }
 
     private static boolean isLitSoulCampfire(BlockState state) {
-        return state.isOf(Blocks.SOUL_CAMPFIRE) && state.get(CampfireBlock.LIT);
+        return state.is(Blocks.SOUL_CAMPFIRE) && state.getValue(CampfireBlock.LIT);
     }
 
     private static double getScale(boolean exponential, double distance, int range) {
@@ -108,7 +108,7 @@ public final class CampfirePull {
             return 1.0;
         }
         double ratio = (distance - 1.0) / (double) (range - 1);
-        ratio = MathHelper.clamp(ratio, 0.0, 1.0);
+        ratio = Mth.clamp(ratio, 0.0, 1.0);
         return Math.max(MIN_PULL_SCALE, ratio);
     }
 

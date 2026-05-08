@@ -1,28 +1,28 @@
 package com.niuhi.visuals;
 
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.registry.Registries;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.phys.Vec3;
 
 public final class VisualSoundUtil {
-    private static final Identifier FALLBACK_SOUND_ID = Identifier.of("minecraft", "block.campfire.crackle");
+    private static final Identifier FALLBACK_SOUND_ID = Identifier.fromNamespaceAndPath("minecraft", "block.campfire.crackle");
 
     private VisualSoundUtil() {
     }
 
-    public static void playSound(ClientWorld world, Vec3d pos, Identifier id) {
+    public static void playSound(ClientLevel world, Vec3 pos, Identifier id) {
         SoundEvent sound = null;
-        if (Registries.SOUND_EVENT.containsId(id)) {
-            sound = Registries.SOUND_EVENT.get(id);
-        } else if (Registries.SOUND_EVENT.containsId(FALLBACK_SOUND_ID)) {
-            sound = Registries.SOUND_EVENT.get(FALLBACK_SOUND_ID);
+        if (BuiltInRegistries.SOUND_EVENT.containsKey(id)) {
+            sound = BuiltInRegistries.SOUND_EVENT.getValue(id);
+        } else if (BuiltInRegistries.SOUND_EVENT.containsKey(FALLBACK_SOUND_ID)) {
+            sound = BuiltInRegistries.SOUND_EVENT.getValue(FALLBACK_SOUND_ID);
         }
         if (sound == null) {
             return;
         }
-        world.playSoundClient(pos.x, pos.y, pos.z, sound, SoundCategory.PLAYERS, 0.8f, 1.0f, false);
+        world.playLocalSound(pos.x, pos.y, pos.z, sound, SoundSource.PLAYERS, 0.8f, 1.0f, false);
     }
 }

@@ -1,35 +1,36 @@
 package com.niuhi.client.particle;
 
-import net.minecraft.client.particle.BillboardParticle;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.client.particle.SpriteProvider;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.SingleQuadParticle.Layer;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.util.RandomSource;
 
-public class ColoredCampfireSmokeParticle extends BillboardParticle {
-    private final SpriteProvider spriteProvider;
+public class ColoredCampfireSmokeParticle extends SingleQuadParticle {
+    private final SpriteSet spriteProvider;
 
-    protected ColoredCampfireSmokeParticle(ClientWorld world, double x, double y, double z,
+    protected ColoredCampfireSmokeParticle(ClientLevel world, double x, double y, double z,
                                            double velocityX, double velocityY, double velocityZ,
                                            float red, float green, float blue,
-                                           SpriteProvider spriteProvider,
-                                           Random random) {
-        super(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider.getSprite(random));
+                                           SpriteSet spriteProvider,
+                                           RandomSource random) {
+        super(world, x, y, z, velocityX, velocityY, velocityZ, spriteProvider.get(random));
         this.spriteProvider = spriteProvider;
-        this.scale = 0.9f + world.random.nextFloat() * 0.2f;
-        this.maxAge = 40 + world.random.nextInt(20);
-        this.gravityStrength = 0.0f;
+        this.quadSize = 0.9f + world.getRandom().nextFloat() * 0.2f;
+        this.lifetime = 40 + world.getRandom().nextInt(20);
+        this.gravity = 0.0f;
         setColor(red, green, blue);
-        updateSprite(spriteProvider);
+        setSpriteFromAge(spriteProvider);
     }
 
     @Override
     public void tick() {
         super.tick();
-        updateSprite(spriteProvider);
+        setSpriteFromAge(spriteProvider);
     }
 
     @Override
-    public RenderType getRenderType() {
-        return RenderType.PARTICLE_ATLAS_TRANSLUCENT;
+    public Layer getLayer() {
+        return Layer.TRANSLUCENT;
     }
 }

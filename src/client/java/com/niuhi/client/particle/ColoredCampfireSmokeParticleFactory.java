@@ -1,18 +1,17 @@
 package com.niuhi.client.particle;
 
 import com.niuhi.particle.ModParticles;
-import net.minecraft.client.particle.ParticleFactory;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.SpriteProvider;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particle.SimpleParticleType;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
 
-public class ColoredCampfireSmokeParticleFactory implements ParticleFactory<SimpleParticleType> {
+public class ColoredCampfireSmokeParticleFactory implements ParticleProvider<SimpleParticleType> {
     private static int nextColor = 0xFFFFFF;
-    private final SpriteProvider spriteProvider;
+    private final SpriteSet spriteProvider;
 
-    public ColoredCampfireSmokeParticleFactory(SpriteProvider spriteProvider) {
+    public ColoredCampfireSmokeParticleFactory(SpriteSet spriteProvider) {
         this.spriteProvider = spriteProvider;
     }
 
@@ -21,10 +20,10 @@ public class ColoredCampfireSmokeParticleFactory implements ParticleFactory<Simp
     }
 
     @Override
-    public Particle createParticle(SimpleParticleType parameters, ClientWorld world,
-                                   double x, double y, double z,
-                                   double velocityX, double velocityY, double velocityZ,
-                                   Random random) {
+    public ColoredCampfireSmokeParticle createParticle(SimpleParticleType parameters, ClientLevel world,
+                              double x, double y, double z,
+                              double velocityX, double velocityY, double velocityZ,
+                              RandomSource random) {
         if (parameters != ModParticles.COLORED_CAMPFIRE_SMOKE) {
             return null;
         }

@@ -4,9 +4,9 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.network.chat.Component;
 
 public final class ServerCommands {
     private ServerCommands() {
@@ -18,35 +18,35 @@ public final class ServerCommands {
         });
     }
 
-    private static void registerCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
-        dispatcher.register(CommandManager.literal("errrw")
-                .then(CommandManager.literal("debug")
-                        .then(CommandManager.literal("status")
+    private static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
+        dispatcher.register(Commands.literal("errrw")
+                .then(Commands.literal("debug")
+                        .then(Commands.literal("status")
                                 .executes(context -> {
                                     ModConfig config = ModConfig.getInstance();
                                     if (!config.debugMode.enableDebugCommands) {
-                                        context.getSource().sendFeedback(() -> Text.literal("Debug commands are disabled."), false);
+                                        context.getSource().sendSuccess(() -> Component.literal("Debug commands are disabled."), false);
                                         return 0;
                                     }
-                                    context.getSource().sendFeedback(() -> Text.literal(getDebugStatus(config)), false);
+                                    context.getSource().sendSuccess(() -> Component.literal(getDebugStatus(config)), false);
                                     return 1;
                                 }))
-                        .then(CommandManager.argument("section", StringArgumentType.word())
-                                .then(CommandManager.argument("enabled", BoolArgumentType.bool())
+                        .then(Commands.argument("section", StringArgumentType.word())
+                                .then(Commands.argument("enabled", BoolArgumentType.bool())
                                         .executes(context -> {
                                             ModConfig config = ModConfig.getInstance();
                                             if (!config.debugMode.enableDebugCommands) {
-                                                context.getSource().sendFeedback(() -> Text.literal("Debug commands are disabled."), false);
+                                                context.getSource().sendSuccess(() -> Component.literal("Debug commands are disabled."), false);
                                                 return 0;
                                             }
                                             String section = StringArgumentType.getString(context, "section");
                                             boolean enabled = BoolArgumentType.getBool(context, "enabled");
                                             if (!setDebugSection(config, section, enabled)) {
-                                                context.getSource().sendFeedback(() -> Text.literal("Unknown debug section: " + section), false);
+                                                context.getSource().sendSuccess(() -> Component.literal("Unknown debug section: " + section), false);
                                                 return 0;
                                             }
                                             ModConfig.save();
-                                            context.getSource().sendFeedback(() -> Text.literal("Debug " + section + " set to " + enabled), false);
+                                            context.getSource().sendSuccess(() -> Component.literal("Debug " + section + " set to " + enabled), false);
                                             return 1;
                                         })))));
     }

@@ -1,14 +1,14 @@
 package com.niuhi.features.campfires;
 
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 public final class HayLogic {
     private HayLogic() {
     }
 
-    public static boolean hasHayBelow(World world, BlockPos campfirePos) {
-        return world.getBlockState(campfirePos.down()).isOf(Blocks.HAY_BLOCK);
+    public static boolean hasHayBelow(Level world, BlockPos campfirePos) {
+        return world.getBlockState(campfirePos.below()).is(Blocks.HAY_BLOCK);
     }
 }

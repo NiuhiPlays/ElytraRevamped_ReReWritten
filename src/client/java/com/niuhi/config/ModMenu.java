@@ -3,9 +3,9 @@ package com.niuhi.config;
 import com.niuhi.ElytraRevampedReReWritten;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.Component;
 
 public class ModMenu implements ModMenuApi {
     @Override
@@ -16,16 +16,16 @@ public class ModMenu implements ModMenuApi {
                 return YACL.getConfigScreen(parent);
             }
 
-            return new Screen(Text.literal("Config Unavailable")) {
+            return new Screen(Component.literal("Config Unavailable")) {
                 @Override
                 protected void init() {
-                    this.addDrawableChild(ButtonWidget.builder(
-                                    Text.literal("YACL Not Installed, Use JSON file"),
+                    this.addRenderableWidget(Button.builder(
+                                    Component.literal("YACL Not Installed, Use JSON file"),
                                     button -> {
-                                        this.close();
+                                        this.onClose();
                                     }
                             )
-                            .position(this.width / 2 - 100, this.height / 2)
+                            .pos(this.width / 2 - 100, this.height / 2)
                             .size(200, 20)
                             .build());
                 }

@@ -5,9 +5,9 @@ import com.niuhi.ElytraRevampedReReWritten;
 import com.niuhi.config.DebugLogger;
 import com.niuhi.config.ModConfig;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.Items;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.Items;
+import net.minecraft.server.level.ServerPlayer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,27 +17,27 @@ public class ElytraDetection {
     private static final boolean ACCESSORIES_LOADED = FabricLoader.getInstance().isModLoaded("accessories");
     private static final Map<UUID, ElytraState> LAST_STATE = new HashMap<>();
 
-    public boolean isFlying(ServerPlayerEntity player) {
-        boolean isGliding = player.isGliding();
+    public boolean isFlying(ServerPlayer player) {
+        boolean isGliding = player.isFallFlying();
         boolean isWearingElytra = isWearingElytra(player);
 
         boolean result = isGliding && isWearingElytra;
         ModConfig config = ModConfig.getInstance();
         DebugLogger logger = new DebugLogger(ElytraRevampedReReWritten.MOD_ID, config);
-        ElytraState last = LAST_STATE.get(player.getUuid());
+        ElytraState last = LAST_STATE.get(player.getUUID());
         ElytraState current = new ElytraState(isGliding, isWearingElytra, result);
         if (!current.equals(last)) {
             logger.log("ELYTRA", "Check gliding=" + isGliding
                     + " wearing=" + isWearingElytra
                     + " result=" + result
                     + " player=" + player.getName().getString());
-            LAST_STATE.put(player.getUuid(), current);
+            LAST_STATE.put(player.getUUID(), current);
         }
         return result;
     }
 
-    public boolean isWearingElytra(ServerPlayerEntity player) {
-        boolean hasElytraEquipped = player.getEquippedStack(EquipmentSlot.CHEST).isOf(Items.ELYTRA);
+    public boolean isWearingElytra(ServerPlayer player) {
+        boolean hasElytraEquipped = player.getItemBySlot(EquipmentSlot.CHEST).is(Items.ELYTRA);
         boolean result = hasElytraEquipped;
 
         if (ACCESSORIES_LOADED) {

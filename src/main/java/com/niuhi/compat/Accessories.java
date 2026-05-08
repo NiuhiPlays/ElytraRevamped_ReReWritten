@@ -1,8 +1,8 @@
 package com.niuhi.compat;
 
 
-import net.minecraft.item.Items;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.world.item.Items;
+import net.minecraft.server.level.ServerPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,8 +14,8 @@ public class Accessories {
     private static final Logger LOGGER = LoggerFactory.getLogger("elytra-revamped-compat");
     private static boolean hasWarned = false;
 
-    public static boolean hasElytraEquipped(ServerPlayerEntity player) {
-        try {
+    public static boolean hasElytraEquipped(ServerPlayer player) {
+/*        try {
             Class.forName("io.wispforest.accessories.api.AccessoriesCapability");
 
             var capability = io.wispforest.accessories.api.AccessoriesCapability.get(player);
@@ -39,6 +39,8 @@ public class Accessories {
                 hasWarned = true;
             }
             return false;
-        }
+        }*/
+        return false;
+        // uncomment above code when Accessories is ported to 26.1
     }
 }
