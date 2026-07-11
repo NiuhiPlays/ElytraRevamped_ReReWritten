@@ -71,13 +71,13 @@ public class ModConfig {
         public int gracePeriodTicks = 20;
 
         public boolean midflightBoost = false;
-        public double midflightBoostAmount = 0.4;
+        public double midflightBoostAmount = 1.0;
     }
 
     // All config options for the Elytra & Extra's
     public static class ElytraConfig {
         public boolean enableMod = true;
-        public boolean enableBounce = false;
+        public boolean enableBounce = true;
 
         public boolean riptideNerf = true;
         public int riptideCooldown = 600;
