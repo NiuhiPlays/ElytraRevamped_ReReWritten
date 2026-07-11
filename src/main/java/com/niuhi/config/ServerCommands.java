@@ -21,6 +21,7 @@ public final class ServerCommands {
     private static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("errrw")
                 .then(Commands.literal("debug")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .then(Commands.literal("status")
                                 .executes(context -> {
                                     ModConfig config = ModConfig.getInstance();
