@@ -1,16 +1,16 @@
 TODO
 
-List of versions (Every version has code changes if they aren't written together in the same line)
-26.1 - 26.1.2
+TODO NEW VERISON 26.3
 
 
-Backport?
-1.21 - 1.21.3
-1.20.X
+TODO Backport? 1.21 - 1.21.3
+TODO Backport? 1.20.X
 
 New Features?
 
-Bug fixes, mid flight boost broken.
+
+
+
 
 DONE
 
@@ -52,6 +52,7 @@ DONE
 
 - Add Midflight boost
 	- Add a Firework star to the Rocket for a 1 Time extra Boost.
+	Bug fixes, mid flight boost broken.
 
 - Check if a Riptide cooldown is possible
 
@@ -61,7 +62,6 @@ DONE
 - Add Elytra Bounce (Configurable Option)
 	- By Default OFF
 	- Experimental
-
 
 - Add Visuals and Sounds (Configurable Option)
 	- Smoke Flair (Campfire smoke particle for Server side. Colored Campfire Particles based on NBT Data on client side(But server checks for NBT and sends it to all clients with the mod))
@@ -84,3 +84,5 @@ List of versions (Every version has code changes if they aren't written together
 1.21.4
 1.21.5 - 1.21.8
 1.21.9 - 1.21.10
+1.21.11
+26.1 - 26.1.2
