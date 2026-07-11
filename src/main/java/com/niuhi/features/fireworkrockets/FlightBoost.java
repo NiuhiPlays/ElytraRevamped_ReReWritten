@@ -5,6 +5,7 @@ import com.niuhi.config.DebugLogger;
 import com.niuhi.config.ModConfig;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.FireworkExplosion;
 import net.minecraft.world.item.component.Fireworks;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -50,6 +51,11 @@ public final class FlightBoost {
         }
         Fireworks fireworks = stack.get(DataComponents.FIREWORKS);
         if (fireworks == null || fireworks.explosions().isEmpty()) {
+            return;
+        }
+        boolean hasStarExplosion = fireworks.explosions().stream()
+                .anyMatch(explosion -> explosion.shape() == FireworkExplosion.Shape.STAR);
+        if (!hasStarExplosion) {
             return;
         }
 
