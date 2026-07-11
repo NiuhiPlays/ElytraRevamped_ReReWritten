@@ -47,9 +47,12 @@ public final class DisableRockets {
             DebugLogger logger = new DebugLogger(ElytraRevampedReReWritten.MOD_ID, config);
             logger.log("ROCKET", "Blocked rocket for " + serverPlayer.getName().getString()
                     + " tick=" + serverTick);
-            FlightBoost.applyMidflightBoost(serverPlayer, player.getStackInHand(hand), config);
+            boolean boosted = FlightBoost.applyMidflightBoost(serverPlayer, player.getStackInHand(hand), config);
             if (config.rocketConfig.rocketFlair) {
                 RocketFlair.trigger(serverPlayer, player.getStackInHand(hand));
+            }
+            if (boosted) {
+                player.getStackInHand(hand).decrementUnlessCreative(1, serverPlayer);
             }
             return ActionResult.FAIL;
         });
