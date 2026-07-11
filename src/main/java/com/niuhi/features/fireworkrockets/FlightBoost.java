@@ -45,23 +45,23 @@ public final class FlightBoost {
         });
     }
 
-    public static void applyMidflightBoost(ServerPlayerEntity player, ItemStack stack, ModConfig config) {
+    public static boolean applyMidflightBoost(ServerPlayerEntity player, ItemStack stack, ModConfig config) {
         if (!config.rocketConfig.midflightBoost) {
-            return;
+            return false;
         }
         FireworksComponent fireworks = stack.get(DataComponentTypes.FIREWORKS);
         if (fireworks == null || fireworks.explosions().isEmpty()) {
-            return;
+            return false;
         }
         boolean hasStarExplosion = fireworks.explosions().stream()
                 .anyMatch(explosion -> explosion.shape() == FireworkExplosionComponent.Type.STAR);
         if (!hasStarExplosion) {
-            return;
+            return false;
         }
 
         double boost = Math.max(0.0, config.rocketConfig.midflightBoostAmount);
         if (boost <= 0.0) {
-            return;
+            return false;
         }
 
         Vec3d direction = player.getRotationVector().normalize();
@@ -71,5 +71,6 @@ public final class FlightBoost {
         DebugLogger logger = new DebugLogger(ElytraRevampedReReWritten.MOD_ID, config);
         logger.log("ROCKET", "Applied midflight boost=" + String.format("%.2f", boost)
                 + " player=" + player.getName().getString());
+        return true;
     }
 }
