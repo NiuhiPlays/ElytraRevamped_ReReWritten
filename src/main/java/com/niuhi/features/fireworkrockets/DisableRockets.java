@@ -47,13 +47,13 @@ public final class DisableRockets {
             DebugLogger logger = new DebugLogger(ElytraRevampedReReWritten.MOD_ID, config);
             logger.log("ROCKET", "Blocked rocket for " + serverPlayer.getName().getString()
                     + " tick=" + serverTick);
-            boolean boosted = FlightBoost.applyMidflightBoost(serverPlayer, player.getStackInHand(hand), config);
+            FlightBoost.applyMidflightBoost(serverPlayer, player.getStackInHand(hand), config);
             if (config.rocketConfig.rocketFlair) {
                 RocketFlair.trigger(serverPlayer, player.getStackInHand(hand));
             }
-            if (boosted) {
-                player.getStackInHand(hand).decrementUnlessCreative(1, serverPlayer);
-            }
+            // Every midflight rocket use costs a rocket (except in creative),
+            // boosted or not — otherwise blocked rockets are free to spam.
+            player.getStackInHand(hand).decrementUnlessCreative(1, serverPlayer);
             return ActionResult.FAIL;
         });
     }
