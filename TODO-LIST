@@ -2,7 +2,6 @@ TODO
 
 TODO NEW VERISON 26.3
 
-
 TODO Backport? 1.21 - 1.21.3
 TODO Backport? 1.20.X
 
@@ -80,9 +79,13 @@ DONE
 	- Make everything configurable using YACL
 	- Make everything configurable using .JSON file
 
+- Fix issue: Initial Boost can be Reset mid Air, By switching Chestplate and Elytra midflight
+- Fixed Rockets not being used
+
 List of versions (Every version has code changes if they aren't written together in the same line)
 1.21.4
 1.21.5 - 1.21.8
 1.21.9 - 1.21.10
 1.21.11
 26.1 - 26.1.2
+26.2
