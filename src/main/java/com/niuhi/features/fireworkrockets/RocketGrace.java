@@ -25,10 +25,13 @@ public final class RocketGrace {
 
             if (isGliding && !wasGliding) {
                 GLIDE_START_TICK.put(uuid, serverTick);
-                USED_GRACE_ROCKET.remove(uuid);
             } else if (!isGliding) {
                 GLIDE_START_TICK.remove(uuid);
-                USED_GRACE_ROCKET.remove(uuid);
+                // Only landing resets the grace rocket; merely stopping the
+                // glide (e.g. swapping the elytra out and back) must not.
+                if (player.onGround() || player.isInWater()) {
+                    USED_GRACE_ROCKET.remove(uuid);
+                }
             }
 
             LAST_GLIDE_STATE.put(uuid, isGliding);
@@ -39,7 +42,6 @@ public final class RocketGrace {
         UUID uuid = player.getUUID();
         if (!GLIDE_START_TICK.containsKey(uuid)) {
             GLIDE_START_TICK.put(uuid, serverTick);
-            USED_GRACE_ROCKET.remove(uuid);
             LAST_GLIDE_STATE.put(uuid, true);
         }
     }

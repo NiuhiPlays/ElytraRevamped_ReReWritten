@@ -37,6 +37,17 @@ loom {
 		}
 	}
 
+	runs {
+		configureEach {
+			// On some Windows setups AF_UNIX loopback connect fails (EINVAL), which
+			// breaks Java NIO selectors and crashes runServer with
+			// "Unable to establish loopback connection". Pointing the unix-socket
+			// tmpdir at a missing dir makes the JDK fall back to TCP loopback.
+			if (System.getProperty("os.name").toLowerCase().contains("win")) {
+				vmArg "-Djdk.net.unixdomain.tmpdir=C:\\__no_such_dir__"
+			}
+		}
+	}
 }
 
 dependencies {
