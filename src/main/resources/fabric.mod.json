@@ -11,7 +11,7 @@
 		"homepage": "https://modrinth.com/mod/elytra-revamped",
 		"sources": "https://github.com/NiuhiPlays/ElytraRevamped_ReReWritten"
 	},
-	"license": "CC-BY-SA-4.0",
+	"license": "MIT",
 	"icon": "assets/elytra-revamped-rerewritten/icon.png",
 	"environment": "*",
 	"entrypoints": {
