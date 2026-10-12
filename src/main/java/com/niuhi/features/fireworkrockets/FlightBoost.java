@@ -4,6 +4,7 @@ import com.niuhi.ElytraRevampedReReWritten;
 import com.niuhi.config.DebugLogger;
 import com.niuhi.config.ModConfig;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import com.niuhi.util.VelocitySync;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.component.FireworkExplosion;
 import net.minecraft.world.item.component.Fireworks;
@@ -66,7 +67,7 @@ public final class FlightBoost {
 
         Vec3 direction = player.getLookAngle().normalize();
         player.push(direction.x * boost, direction.y * boost, direction.z * boost);
-        player.hurtMarked = true;
+        VelocitySync.mark(player);
 
         DebugLogger logger = new DebugLogger(ElytraRevampedReReWritten.MOD_ID, config);
         logger.log("ROCKET", "Applied midflight boost=" + String.format("%.2f", boost)

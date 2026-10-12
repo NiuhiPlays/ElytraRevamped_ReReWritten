@@ -4,6 +4,7 @@ import com.niuhi.ElytraRevampedReReWritten;
 import com.niuhi.config.DebugLogger;
 import com.niuhi.config.ModConfig;
 import com.niuhi.visuals.ServerVisuals;
+import com.niuhi.util.VelocitySync;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
 
@@ -28,7 +29,7 @@ public final class ControllableDrag {
         double dragAmount = Math.max(0.0, Math.min(1.0, config.dragConfig.dragAmount));
         Vec3 velocity = player.getDeltaMovement();
         player.setDeltaMovement(velocity.x * dragAmount, velocity.y * dragAmount, velocity.z * dragAmount);
-        player.hurtMarked = true;
+        VelocitySync.mark(player);
 
         Integer lastTick = LAST_DRAG_TICK.get(player.getUUID());
         if (lastTick == null || serverTick - lastTick >= 5) {

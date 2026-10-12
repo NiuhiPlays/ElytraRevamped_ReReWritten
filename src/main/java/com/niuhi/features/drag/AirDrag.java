@@ -3,6 +3,7 @@ package com.niuhi.features.drag;
 import com.niuhi.ElytraRevampedReReWritten;
 import com.niuhi.config.DebugLogger;
 import com.niuhi.config.ModConfig;
+import com.niuhi.util.VelocitySync;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
@@ -33,7 +34,7 @@ public final class AirDrag {
         double appliedDrag = 1.0 - scaledFactor * (1.0 - dragAmount);
         Vec3 velocity = player.getDeltaMovement();
         player.setDeltaMovement(velocity.x * appliedDrag, velocity.y * appliedDrag, velocity.z * appliedDrag);
-        player.hurtMarked = true;
+        VelocitySync.mark(player);
 
         Integer lastTick = LAST_DRAG_TICK.get(player.getUUID());
         if (lastTick == null || serverTick - lastTick >= EMIT_INTERVAL_TICKS) {

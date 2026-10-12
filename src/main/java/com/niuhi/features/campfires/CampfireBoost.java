@@ -4,6 +4,7 @@ import com.niuhi.ElytraRevampedReReWritten;
 import com.niuhi.config.DebugLogger;
 import com.niuhi.config.ModConfig;
 import com.niuhi.visuals.ServerVisuals;
+import com.niuhi.util.VelocitySync;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
@@ -38,7 +39,7 @@ public final class CampfireBoost {
 
         Vec3 velocity = player.getDeltaMovement();
         player.setDeltaMovement(velocity.x, velocity.y + result.strength, velocity.z);
-        player.hurtMarked = true;
+        VelocitySync.mark(player);
 
         LAST_BOOST_TICK.put(player.getUUID(), serverTick);
         ServerVisuals.broadcastBoost(player);
