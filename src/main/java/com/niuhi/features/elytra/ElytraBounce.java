@@ -1,11 +1,7 @@
 package com.niuhi.features.elytra;
 
-import com.niuhi.compat.Accessories;
-import net.fabricmc.loader.api.FabricLoader;
 import com.niuhi.mixin.EntityFlagAccessor;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.PlayerInput;
 
@@ -14,7 +10,6 @@ import java.util.Map;
 import java.util.UUID;
 
 public final class ElytraBounce {
-    private static final boolean ACCESSORIES_LOADED = FabricLoader.getInstance().isModLoaded("accessories");
     private static final Map<UUID, Integer> TICKS_ON_GROUND = new HashMap<>();
     private static final int MAX_GROUND_TICKS = 5;
 
@@ -47,7 +42,7 @@ public final class ElytraBounce {
         }
         
         // Check if wearing elytra
-        if (!isWearingElytra(player)) {
+        if (!ElytraDetection.isWearingElytra(player)) {
             return originalValue;
         }
         
@@ -85,7 +80,7 @@ public final class ElytraBounce {
         }
         
         // Check if wearing elytra
-        if (!isWearingElytra(player)) {
+        if (!ElytraDetection.isWearingElytra(player)) {
             TICKS_ON_GROUND.put(uuid, 0);
             return;
         }
@@ -101,18 +96,6 @@ public final class ElytraBounce {
         } else if (groundTicks > MAX_GROUND_TICKS) {
             TICKS_ON_GROUND.put(uuid, 0);
         }
-    }
-
-    private static boolean isWearingElytra(ServerPlayerEntity player) {
-        if (player.getEquippedStack(EquipmentSlot.CHEST).isOf(Items.ELYTRA)) {
-            return true;
-        }
-        
-        if (ACCESSORIES_LOADED) {
-            return Accessories.hasElytraEquipped(player);
-        }
-        
-        return false;
     }
 
     public static void clearState(UUID playerUUID) {
