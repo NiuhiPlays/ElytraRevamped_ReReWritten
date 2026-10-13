@@ -1,6 +1,7 @@
 package com.niuhi.features.elytra;
 
 import com.niuhi.compat.Accessories;
+import com.niuhi.compat.Trinkets;
 import com.niuhi.ElytraRevampedReReWritten;
 import com.niuhi.config.DebugLogger;
 import com.niuhi.config.ModConfig;
@@ -15,6 +16,7 @@ import java.util.UUID;
 
 public class ElytraDetection {
     private static final boolean ACCESSORIES_LOADED = FabricLoader.getInstance().isModLoaded("accessories");
+    private static final boolean TRINKETS_LOADED = FabricLoader.getInstance().isModLoaded("trinkets_updated");
     private static final Map<UUID, ElytraState> LAST_STATE = new HashMap<>();
 
     public boolean isFlying(ServerPlayer player) {
@@ -36,15 +38,16 @@ public class ElytraDetection {
         return result;
     }
 
-    public boolean isWearingElytra(ServerPlayer player) {
-        boolean hasElytraEquipped = player.getItemBySlot(EquipmentSlot.CHEST).is(Items.ELYTRA);
-        boolean result = hasElytraEquipped;
-
-        if (ACCESSORIES_LOADED) {
-            boolean hasAccessoryElytra = Accessories.hasElytraEquipped(player);
-            result = hasElytraEquipped || hasAccessoryElytra;
+    public static boolean isWearingElytra(ServerPlayer player) {
+        if (player.getItemBySlot(EquipmentSlot.CHEST).is(Items.ELYTRA)) {
+            return true;
         }
-        return result;
+
+        if (ACCESSORIES_LOADED && Accessories.hasElytraEquipped(player)) {
+            return true;
+        }
+
+        return TRINKETS_LOADED && Trinkets.hasElytraEquipped(player);
     }
 
     private static final class ElytraState {

@@ -41,6 +41,7 @@
 	"suggests": {
 		"modmenu": "*",
 		"yet_another_config_lib_v3": "*",
-		"accessories": "*"
+		"accessories": "*",
+		"trinkets_updated": "*"
 	}
 }

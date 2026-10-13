@@ -18,6 +18,7 @@ public class ElytraRevampedReReWritten implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	public static final boolean ACCESSSORIES_LOADED = FabricLoader.getInstance().isModLoaded("accessories");
+	public static final boolean TRINKETS_LOADED = FabricLoader.getInstance().isModLoaded("trinkets_updated");
 	public static final boolean YACL_LOADED = FabricLoader.getInstance().isModLoaded("yet_another_config_lib_v3");
 
 	@Override
@@ -26,6 +27,9 @@ public class ElytraRevampedReReWritten implements ModInitializer {
 
 		if (ACCESSSORIES_LOADED){
 			LOGGER.info("Accessories mod detected! Now checking for capes...");
+		}
+		if (TRINKETS_LOADED){
+			LOGGER.info("Trinkets Updated detected! Now checking trinket slots for elytras...");
 		}
 		if (YACL_LOADED){
 			LOGGER.info("YACL detected! Enabling In-Game configurations...");
